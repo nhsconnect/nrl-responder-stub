@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Record {{recordId}}</title>
+</head>
+<body>
+    <h1>Patient {{patientId}}</h1>
+    <h2>Record {{recordId}}</h2>
+
+    <p>{{description}}</p>
+</body>
+</html>

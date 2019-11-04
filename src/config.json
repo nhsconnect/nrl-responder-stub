@@ -1,0 +1,14 @@
+{
+    "testServerPort": "5000",
+    
+    "// fromAsid":"200000000116",
+    "// toAsid":"200000000118",
+    "// odsCode":"AMS01",
+    "// userProfileId":"testUser123",
+    "// sspInteractionId":"urn:nhs:names:services:nrl:DocumentReference.content.read",
+    "// sslClientCert":"path/to/cert",
+    "// sslClientKey":"path/to/cert/private/key",
+    "// sslClientPassphrase":"CERT_PASSWORD",
+    "// sslCACert":"path/to/full/trust/chain/ca/root/cert",
+    "// sslInsecure": true
+}

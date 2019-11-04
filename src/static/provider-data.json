@@ -1,0 +1,114 @@
+{
+    "providers": {
+        "https://provider1.example.com": {
+            "url": "https://provider1.example.com",
+            "patients": {
+                "3b687ca0-47d7-4d2f-846c-768c9b7138bb": {
+                    "id": "3b687ca0-47d7-4d2f-846c-768c9b7138bb",
+                    "records": {
+                        "cb8e5386-35c4-4dd3-a6ce-7f08fa8853f8": {
+                            "id": "cb8e5386-35c4-4dd3-a6ce-7f08fa8853f8",
+                            "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pharetra tellus nisi, eget pellentesque metus maximus vitae. In placerat velit eu mi efficitur feugiat. Nulla lacus quam, consectetur eget viverra in, bibendum eget ligula. Maecenas ut ligula odio. Sed id elit massa. Etiam consectetur eu mauris volutpat accumsan. Donec porttitor arcu diam, quis pretium dolor vestibulum ut. Pellentesque maximus eu sem ut placerat.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        },
+                        "5a85cbb4-6269-4717-a971-a679f0df3695": {
+                            "id": "5a85cbb4-6269-4717-a971-a679f0df3695",
+                            "desc": "Suspendisse congue risus lectus, sit amet bibendum purus hendrerit a. Nullam dapibus augue arcu, et viverra nunc elementum quis. Etiam eleifend magna libero. Vestibulum iaculis nunc arcu, laoreet aliquet lacus laoreet finibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas porttitor fringilla lorem, vel vehicula orci laoreet ut. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer pulvinar augue sed nulla ultrices gravida. Nam ultricies mollis turpis non hendrerit. Mauris euismod felis sed magna efficitur pretium. Aenean venenatis augue quis hendrerit accumsan.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        }
+                    }
+                },
+                "e8b29106-944a-4bc1-b7b8-62f878717129": {
+                    "id": "e8b29106-944a-4bc1-b7b8-62f878717129",
+                    "records": {
+                        "3a66ed28-4698-4890-a9d1-510c65a8c58f": {
+                            "id": "3a66ed28-4698-4890-a9d1-510c65a8c58f",
+                            "desc": "In pharetra fermentum erat in cursus. Morbi ut lorem eleifend, pharetra lorem sed, viverra augue. Morbi bibendum iaculis lacus eget dapibus. Sed ultrices fringilla leo, vitae iaculis arcu. Nam dictum sagittis ante, at consectetur erat rhoncus quis. Cras elementum magna id pulvinar euismod. Aenean aliquam ornare tellus, quis molestie nisl lobortis et. In auctor elementum vestibulum.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        },
+                        "7ffbe764-f75d-4fcd-9fc6-c73f2e49bd59": {
+                            "id": "7ffbe764-f75d-4fcd-9fc6-c73f2e49bd59",
+                            "desc": "Nullam et eros vehicula, mollis urna id, tristique massa. Suspendisse sagittis tincidunt fermentum. Donec velit sem, ultricies nec ipsum a, facilisis malesuada lacus. Vestibulum placerat semper neque, eget ultricies tellus egestas non. In nec consequat magna, faucibus suscipit nibh. Vestibulum lacinia enim in faucibus blandit. Nam at laoreet purus, sed dapibus magna. Donec convallis ante eget lectus tristique, tempus facilisis enim tempor.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "https://provider2.example.com": {
+            "url": "https://provider2.example.com",
+            "patients": {
+                "0bcb902c-b5c6-401e-811a-e723fb231e7c": {
+                    "id": "0bcb902c-b5c6-401e-811a-e723fb231e7c",
+                    "records": {
+                        "d691270d-840a-41dd-9a65-5ddb204d7648": {
+                            "id": "d691270d-840a-41dd-9a65-5ddb204d7648",
+                            "desc": "Nam luctus, eros non cursus fermentum, ex diam dictum metus, a lacinia erat dui at justo. Nulla et libero euismod, blandit urna ac, sollicitudin orci. Aenean porta nibh libero, vitae cursus lacus tempus egestas. Etiam porta in velit a interdum. Nam suscipit felis eget elementum lacinia. Mauris venenatis viverra condimentum. Donec accumsan purus vel odio tincidunt, eu molestie tortor suscipit. Nullam ut dapibus nunc.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        },
+                        "24489da9-1211-42cc-b2e7-42d59c18bc62": {
+                            "id": "24489da9-1211-42cc-b2e7-42d59c18bc62",
+                            "desc": "Nunc in est eget lectus tincidunt finibus ut vel leo. Quisque facilisis velit id elementum euismod. Pellentesque nec tristique massa. Cras auctor nisi erat, non scelerisque purus lobortis quis. Sed convallis velit eget felis molestie, vel luctus felis scelerisque. Cras feugiat diam interdum lectus iaculis, quis fringilla mi pulvinar. Morbi at pulvinar felis. Curabitur consectetur diam est, et blandit velit tincidunt quis. Phasellus euismod dolor a felis interdum pretium. Vestibulum tempus eleifend purus vel iaculis. Praesent et hendrerit libero, non malesuada mi. Donec auctor eget odio vitae malesuada. Mauris scelerisque diam vitae leo rhoncus venenatis. Nam luctus, purus nec mattis egestas, tellus velit auctor lacus, vitae faucibus eros ex at risus.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        }
+                    }
+                },
+                "47d2c47f-dea0-4c26-879d-86bbd3d7de59": {
+                    "id": "47d2c47f-dea0-4c26-879d-86bbd3d7de59",
+                    "records": {
+                        "2c324fab-0ab8-49f5-a5dd-a104bc47b170": {
+                            "id": "2c324fab-0ab8-49f5-a5dd-a104bc47b170",
+                            "desc": "Suspendisse ipsum tellus, blandit eget fringilla dictum, vehicula eu nibh. Nunc sagittis ligula id urna porttitor porttitor. Integer mollis neque ante, ut euismod felis tincidunt vitae. Sed id nulla convallis, consectetur diam sed, sollicitudin risus. Donec hendrerit, odio varius tempus mattis, ligula eros posuere neque, sit amet sodales libero purus faucibus nibh. Donec vitae convallis ex. Aliquam porttitor scelerisque arcu, consequat ornare erat ornare et.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        },
+                        "a9d28e6d-7203-401e-8e8a-69b089e09ff5": {
+                            "id": "a9d28e6d-7203-401e-8e8a-69b089e09ff5",
+                            "desc": "Curabitur euismod tortor vitae justo pretium, ut finibus sem lobortis. Quisque eget sem leo. Donec malesuada lacus nibh, nec mattis velit tristique ac. Nam pellentesque ipsum non urna vulputate, id venenatis nibh interdum. Phasellus eu massa vel eros dapibus tincidunt vel quis nunc. Aenean nec quam sollicitudin, malesuada elit iaculis, commodo nulla. Fusce tellus nunc, pharetra vitae ornare id, ullamcorper in purus.",
+                            "availableFormats": [
+                                "html",
+                                "json",
+                                "pdf",
+                                "xml"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
