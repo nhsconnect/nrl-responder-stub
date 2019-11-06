@@ -1,11 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
 
 declare global {
-    type responseSent = boolean | void;
-
-    interface IResponse extends Response { }
     interface IRequest extends Request { }
     interface INextFunction extends NextFunction { }
+
+    interface IResponse extends Response {
+        body?: string;
+        tests?: Test[];
+    }
+
+    type SeverityLevel = 'error' | 'warn' | 'info';
+
+    type Test = IPassedTest | IFailedTest;
+
+    interface ITestBase {
+        description: string;
+    }
+
+    interface IPassedTest extends ITestBase {
+        success: true;
+    }
+
+    interface IFailedTest extends ITestBase {
+        success: false;
+        details: string;
+        severity: SeverityLevel;
+    }
 
     interface IHttpStatusMap {
         [key: string]: number;

@@ -65,22 +65,24 @@ const start = () => {
     });
 
     // logging
-    app.use((req, res, next) => {
-        res.on('finish', function () {
-            const { headers, httpVersion, method, path, body: requestBody } = req;
-            const { statusCode, body: responseBody } = res as any;
+    app.use((req: IRequest, res: IResponse, next) => {
+        if (!['/', '/urls', '/favicon.ico', '/endpoints'].includes(req.path)) {
+            res.tests = [];
 
-            if (!['/', '/urls', '/favicon.ico', '/endpoints'].includes(path)) {
-                const data = {
-                    req: { headers, httpVersion, method, path },
-                    res: { statusCode, headers: res.getHeaders(), body: responseBody }
-                };
+            res.on('finish', function () {
+                const { headers, httpVersion, method, path, body: requestBody } = req;
+                const { statusCode, body: responseBody, tests } = res;
+                
+                    const data = {
+                        req: { headers, httpVersion, method, path, body: requestBody },
+                        res: { statusCode, headers: res.getHeaders(), body: responseBody, tests }
+                    };
 
-                if (method !== 'GET') (data.req as any).body = requestBody;
+                    if (method === 'GET') delete data.req.body;
 
-                log(data);
-            }
-        });
+                    log(data);
+            });
+        }
 
         return next();
     });

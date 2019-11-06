@@ -9,17 +9,19 @@ const isFileInfo = (maybeFileInfo: any): maybeFileInfo is IFileInfo => {
 };
 
 export default (req: IRequest, res: IResponse) => {
-    const headerErrorResponseSent = checkHeaders(req, res);
+    const headersValid = checkHeaders(req, res);
 
-    if (headerErrorResponseSent) {
-        return headerErrorResponseSent;
+    if (!headersValid) {
+        return false;
     }
 
     const fileInfoOrErrorResponse = buildFileInfo(req, res);
     
     if (isFileInfo(fileInfoOrErrorResponse)) {
-        return respondWithFile(res, fileInfoOrErrorResponse);
+        respondWithFile(res, fileInfoOrErrorResponse);
+        
+        return true;
     } else { // is error response
-        return fileInfoOrErrorResponse;
+        return false;
     }
 };
