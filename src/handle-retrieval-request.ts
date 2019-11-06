@@ -3,22 +3,23 @@ import respondWithFile from './respond-with-file';
 import checkHeaders from './check-headers';
 import buildFileInfo from './build-file-info';
 
-export default (req: IRequest, res: IResponse) => {
-    const headerErrorResponse = checkHeaders(req, res);
+const isFileInfo = (maybeFileInfo: any): maybeFileInfo is IFileInfo => {
+    return [ 'patient', 'record', 'fileFormat' ]
+            .every(propName => maybeFileInfo?.hasOwnProperty?.(propName));
+};
 
-    if (headerErrorResponse) {
-        return headerErrorResponse;
+export default (req: IRequest, res: IResponse) => {
+    const headerErrorResponseSent = checkHeaders(req, res);
+
+    if (headerErrorResponseSent) {
+        return headerErrorResponseSent;
     }
 
     const fileInfoOrErrorResponse = buildFileInfo(req, res);
-
-    const fileInfo = (fileInfoOrErrorResponse as any as { fileInfo: IFileInfo }).fileInfo;
     
-    if (!fileInfo) {
-        const pathErrorResponse = fileInfoOrErrorResponse;
-
-        return pathErrorResponse;
+    if (isFileInfo(fileInfoOrErrorResponse)) {
+        return respondWithFile(res, fileInfoOrErrorResponse);
+    } else { // is error response
+        return fileInfoOrErrorResponse;
     }
-
-    return respondWithFile(res, fileInfo);
 };

@@ -1,5 +1,9 @@
 {
-    "testServerPort": "5000",
+    "testServerPort": 5000,
+    "logOutput": {
+        "stdout": false,
+        "logsDir": true
+    },
     
     "// fromAsid":"200000000116",
     "// toAsid":"200000000118",

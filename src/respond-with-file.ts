@@ -6,7 +6,7 @@ export default (res: IResponse, fileInfo: IFileInfo) => {
     const { patient, record, fileFormat } = fileInfo;
 
     res
-        .status(httpStatus.ok)
+        .status(httpStatus.OK)
         .type(fileFormat.mimeType);
     
     if (fileFormat.encoding === 'binary') {

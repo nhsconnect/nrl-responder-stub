@@ -1,12 +1,14 @@
 {
-    "name": "nrl-consumer-retrieval-test-app",
+    "name": "consumer-record-retrieval-test-app",
     "version": "0.0.1",
-    "description": "NHS Digital NRL Consumer Retrieval Test App",
+    "description": "NHS Digital NRL Consumer Record Retrieval Test App",
     "main": "main.js",
     "scripts": {
-        "cpf": "copyfiles -u 1 \"src/static/**\" \"src/config.json\" dist",
-        "build-dev": "rm -rf ./dist && mkdir dist && node make-doc.js && npm run cpf && tsc",
-        "start-dev": "node dist/main.js",
+        "// cpf": "copyfiles -u 1 \"src/static/**\" \"src/config.json\" dist",
+        "// build-dev": "rm -rf dist && mkdir dist && node make-doc.js && npm run cpf && tsc",
+        "// start-dev": "node dist/main.js",
+        "build-dev": "ts-node make-doc.ts",
+        "start-dev": "ts-node src/main.ts",
         "dev": "npm run build-dev && npm run start-dev",
         "tsc": "tsc"
     },
@@ -19,15 +21,13 @@
     "license": "OGL",
     "devDependencies": {
         "@types/express": "^4.17.1",
-        "@types/morgan": "^1.7.37",
         "chalk": "^2.4.2",
         "copyfiles": "^2.1.1",
         "express": "^4.17.1",
-        "morgan": "^1.9.1",
-        "newman": "^4.5.5",
-        "newman-reporter-html": "^1.0.4",
-        "showdown": "^1.9.0",
-        "typescript": "^3.6.4"
+        "handlebars": "^4.5.1",
+        "showdown": "^1.9.1",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.7.2"
     },
     "dependencies": {}
 }

@@ -1,12 +1,5 @@
 # README
 
-<!-- Usage:
-```
-./run.sh [-m]
-```
-
-`-m` runs the app in manual mode, which will not generate a report once all endpoints are hit, but will instead keep the server running for manual testing purposes. -->
-
 [/urls](/urls) provides a list of the available Provider URLs for testing, as if retrieved from pointers.
 
 Endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root.

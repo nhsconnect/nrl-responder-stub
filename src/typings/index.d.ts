@@ -1,8 +1,15 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 declare global {
-    interface IResponse extends Response {}
-    interface IRequest extends Request {}
+    type responseSent = boolean | void;
+
+    interface IResponse extends Response { }
+    interface IRequest extends Request { }
+    interface INextFunction extends NextFunction { }
+
+    interface IHttpStatusMap {
+        [key: string]: number;
+    }
 
     interface IFileFormats {
         [key: string]: IFileFormat;

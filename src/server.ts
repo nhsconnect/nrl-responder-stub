@@ -1,18 +1,36 @@
 import express from 'express';
 import chalk from 'chalk';
+import fs from 'fs';
 import path from 'path';
 import httpStatus from './http-status';
 import handleRetrievalRequest from './handle-retrieval-request';
 import getUrls from './get-urls';
-import morgan from 'morgan';
 
 const config = require('./config.json');
 const providerData: IProviderData = require('./static/provider-data.json');
 
-const { testServerPort } = config;
+const { testServerPort, logOutput } = config;
 const port = testServerPort || 5000;
 
 const app = express();
+
+const logs: any[] = [];
+
+const logFileName = `${new Date().toISOString().slice(0, -5).replace(/\D/g, '-')}.json`;
+const logDir = path.join(__dirname, 'logs');
+const logPath = path.join(logDir, logFileName);
+
+const log = (newLog: any) => {
+    logs.push(newLog);
+
+    if (logOutput.stdout) {
+        console.log(JSON.parse(JSON.stringify(newLog)));
+    }
+
+    if (logOutput.logsDir) {
+        fs.writeFileSync(logPath, JSON.stringify(logs), 'utf-8');
+    }
+};
 
 const constructEndpoint = (url: string) => `/${encodeURIComponent(url)}`;
 
@@ -21,41 +39,54 @@ const start = () => {
 
     const endpoints = urls.map(url => `http://localhost:${port}${constructEndpoint(url)}`);
 
-    app.use((req, res, next) => {
-        const { headers, httpVersion, method, url, path } = req;
+    // populate `res.body` on `send` or `sendFile`, for logging purposes
+    app.use(function (_req, res, next) {
+        const send = res.send;
 
-        if (!['/', '/urls', '/favicon.ico', '/endpoints'].includes(path)) {
-            console.log({ headers, httpVersion, method, url });
-        }
+        (res.send as any) = function (this: any, stringOrBuffer: string | Buffer) {
+            (res as any).body = stringOrBuffer instanceof Buffer
+                ? stringOrBuffer.toString()
+                : stringOrBuffer;
 
-        next();
+            send.call(this, stringOrBuffer);
+        };
+
+        const sendFile = res.sendFile;
+
+        (res.sendFile as any) = function (this: any, path: string, ...args: any) {
+            const filename = path.match(/[^\\/]+$/)?.[0];
+
+            (res as any).body = `[file ${filename}]`;
+
+            (sendFile as any).call(this, path, ...args);
+        };
+
+        return next();
     });
 
-    // app.use(morgan((tokens, req, res) => { // logging
-    //     return [
-    //         tokens.method(req, res),
-    //         tokens.url(req, res),
-    //         tokens.status(req, res),
-    //         tokens.res(req, res, 'content-length'),
-    //         '-',
-    //         tokens['response-time'](req, res), 'ms'
-    //     ].join(' ')
-    // }, {
-    // skip: (req, res) => {
-    //     return ['/', '/urls', '/favicon.ico', '/endpoints']
-    //         .includes(req.path);
-    // }
-    // }));
+    // logging
+    app.use((req, res, next) => {
+        res.on('finish', function () {
+            const { headers, httpVersion, method, path, body: requestBody } = req;
+            const { statusCode, body: responseBody } = res as any;
 
-    // app.use(morgan('combined', {
-    //     skip: (req, res) => {
-    //         return [ '/', '/urls', '/favicon.ico', '/endpoints' ]
-    //             .includes(req.path);
-    //     }
-    // }));
+            if (!['/', '/urls', '/favicon.ico', '/endpoints'].includes(path)) {
+                const data = {
+                    req: { headers, httpVersion, method, path },
+                    res: { statusCode, headers: res.getHeaders(), body: responseBody }
+                };
 
-    // prevent unnecessary console errors
-    app.get('/favicon.ico', (_req, res) => res.sendStatus(httpStatus.noContent));
+                if (method !== 'GET') (data.req as any).body = requestBody;
+
+                log(data);
+            }
+        });
+
+        return next();
+    });
+
+    // prevent unnecessary console errors if viewed in browser
+    app.get('/favicon.ico', (_req, res) => res.sendStatus(httpStatus.NoContent));
 
     app.get('/', (_req, res) => {
         // generated from src/README.md during build
@@ -70,18 +101,27 @@ const start = () => {
         return res.json({ endpoints });
     });
 
-    app.get('/:url', handleRetrievalRequest);
+    app.get('/:url', (req, res) => handleRetrievalRequest(req, res));
 
-    app.get('*', (_req, res) => {
-        return res
-            .status(httpStatus.badRequest)
+    app.get('*', (_req, res, next) => {
+        res
+            .status(httpStatus.BadRequest)
             .send('Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)');
+        
+        return next();
     });
 
     app.listen(port, () => {
-        console.log(chalk.cyan(`App running at ${chalk.underline(`http://localhost:${port}`)}`));
+        console.log(`App running at ${chalk.cyan.bold.underline(`http://localhost:${port}`)}.`);
 
-        console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server`);
+        console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server.`);
+
+        if (logOutput.logsDir) {
+            fs.mkdirSync(logDir, { recursive: true });
+            fs.writeFileSync(logPath, JSON.stringify(logs), 'utf-8'); // empty logs arr
+
+            console.log(`Logs from this session will be available at ${chalk.cyan.bold(logPath)}.`);
+        }
     });
 };
 

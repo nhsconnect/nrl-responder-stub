@@ -8,7 +8,7 @@ converter.setFlavor('github');
 const md = fs.readFileSync(path.join(__dirname, 'src', 'README.md'), 'utf8');
 
 const html = `<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,4 +33,4 @@ const html = `<!DOCTYPE html>
 <body class="markdown-body">${converter.makeHtml(md)}</body>
 </html>`;
 
-fs.writeFileSync(path.join(__dirname, 'dist', 'README.html'), html);
+fs.writeFileSync(path.join(__dirname, 'src', 'README.html'), html);

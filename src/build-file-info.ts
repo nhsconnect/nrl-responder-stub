@@ -32,7 +32,7 @@ export default (req: IRequest, res: IResponse) => {
         url = new URL(req.params.url); // automatically percent-decoded in `params` object
     } catch {
         return res
-            .status(httpStatus.badRequest)
+            .status(httpStatus.BadRequest)
             .send('Provider URL could not be parsed');
     }
 
@@ -40,28 +40,28 @@ export default (req: IRequest, res: IResponse) => {
 
     if (!provider) {
         return res
-            .status(httpStatus.badRequest)
+            .status(httpStatus.BadRequest)
             .send('Invalid provider URL origin');
     }
 
     // format /api/patients/<patientId>/records/<recordId>.json
     const matches = url.pathname.match(
-        new RegExp('^/api/patients/(.+?)/records/(.+?)\\.(.+)$')
+        /^\/api\/patients\/(?<patientId>.+?)\/records\/(?<recordId>.+?)\.(?<extension>.+)$/
     );
 
     if (!matches) {
         return res
-            .status(httpStatus.badRequest)
+            .status(httpStatus.BadRequest)
             .send('Provider URL pathname is incorrectly constructed');
     }
 
-    const [patientId, recordId, extension] = (matches as string[]).slice(1);
+    const { patientId, recordId, extension } = (matches.groups as any);
 
     const patient = provider.patients[patientId];
 
     if (!patient) {
         return res
-            .status(httpStatus.notFound)
+            .status(httpStatus.NotFound)
             .send('Invalid patient ID');
     }
 
@@ -69,13 +69,13 @@ export default (req: IRequest, res: IResponse) => {
 
     if (!record) {
         return res
-            .status(httpStatus.notFound)
+            .status(httpStatus.NotFound)
             .send('Invalid record ID');
     }
 
     if (!record.availableFormats.includes(extension)) {
         return res
-            .status(httpStatus.badRequest)
+            .status(httpStatus.BadRequest)
             .send(`Invalid file extension for this record. Available extensions: ${record.availableFormats.join(', ')}`);
     }
 
@@ -83,11 +83,9 @@ export default (req: IRequest, res: IResponse) => {
 
     if (!fileFormat) {
         return res
-            .status(httpStatus.badRequest)
+            .status(httpStatus.BadRequest)
             .send('Unrecognised MIME type');
     }
 
-    return {
-        fileInfo: { patient, record, fileFormat }
-    };
+    return { patient, record, fileFormat };
 };
