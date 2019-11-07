@@ -1,38 +1,26 @@
 import { Request, Response, NextFunction } from 'express';
 
 declare global {
+    interface IStringMap<T> {
+        [key: string]: T;
+    }
+
     interface IRequest extends Request { }
     interface INextFunction extends NextFunction { }
+    interface IResponse extends Response { }
 
-    interface IResponse extends Response {
+    interface IDetailedResponse extends Response {
         body?: string;
-        tests?: Test[];
+        tests: ITest[];
     }
 
-    type SeverityLevel = 'error' | 'warn' | 'info';
+    type TestOutcome = 'pass' | 'warn' | 'fail';
 
-    type Test = IPassedTest | IFailedTest;
-
-    interface ITestBase {
+    interface ITest {
+        id: string;
         description: string;
-    }
-
-    interface IPassedTest extends ITestBase {
-        success: true;
-    }
-
-    interface IFailedTest extends ITestBase {
-        success: false;
-        details: string;
-        severity: SeverityLevel;
-    }
-
-    interface IHttpStatusMap {
-        [key: string]: number;
-    }
-
-    interface IFileFormats {
-        [key: string]: IFileFormat;
+        outcome: TestOutcome;
+        details?: string;
     }
 
     interface IFileFormat {
@@ -42,23 +30,18 @@ declare global {
     }
 
     interface IProviderData {
-        providers: {
-            [key: string]: IProvider;
-        }
+        providers: IStringMap<IProvider>
     }
 
     interface IProvider {
         url: string;
-        patients: {
-            [key: string]: IPatient;
-        }
+        patients: IStringMap<IPatient>
+        
     }
 
     interface IPatient {
         id: string;
-        records: {
-            [key: string]: IRecord;
-        }
+        records: IStringMap<IRecord>
     }
 
     interface IRecord {

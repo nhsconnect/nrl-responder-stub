@@ -65,8 +65,10 @@ const start = () => {
     });
 
     // logging
-    app.use((req: IRequest, res: IResponse, next) => {
+    app.use((req: IRequest, _res: IResponse, next) => {
         if (!['/', '/urls', '/favicon.ico', '/endpoints'].includes(req.path)) {
+            const res = _res as IDetailedResponse;
+
             res.tests = [];
 
             res.on('finish', function () {

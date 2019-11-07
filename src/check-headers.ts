@@ -1,5 +1,6 @@
 import httpStatus from './http-status';
 import checkJwt from './check-jwt';
+import { uuidMatcher, asidMatcher } from './pattern-matchers';
 
 export default (req: IRequest, res: IResponse): boolean => {
     // Ssp-TraceID  	    Consumer’s TraceID (i.e. GUID/UUID)
@@ -31,15 +32,24 @@ export default (req: IRequest, res: IResponse): boolean => {
         return false;
     }
 
-    const hexChars = '[0-9a-f]';
-    const uuidRegex = new RegExp(`^${hexChars}{8}-${hexChars}{4}-${hexChars}{4}-${hexChars}{4}-${hexChars}{12}$`, 'i');
-
-    if (!uuidRegex.test(headers['ssp-traceid'] as string)) {
+    if (!uuidMatcher.test(headers['ssp-traceid'] as string)) {
         res
             .status(httpStatus.BadRequest)
             .send(`The Ssp-TraceID header must be a UUID in the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (where each x is a hex digit)`);
 
         return false;
+    }
+
+    const asidHeaders = ['Ssp-From', 'Ssp-To']
+
+    for (const idx in asidHeaders) {
+        if (!asidMatcher.test(headers[asidHeaders[idx].toLowerCase()] as string)) {
+            res
+                .status(httpStatus.BadRequest)
+                .send(`The ${asidHeaders[idx]} header must be an ASID consisting of 12 digits`);
+
+            return false;
+        }
     }
 
     const authHeader = headers.authorization || '';
@@ -52,7 +62,7 @@ export default (req: IRequest, res: IResponse): boolean => {
         return false;
     }
 
-    if (!checkJwt(authHeader.replace(/^Bearer /, ''))) {
+    if (!checkJwt(req, res, authHeader.replace(/^Bearer /, ''))) {
         return false;
     }
     

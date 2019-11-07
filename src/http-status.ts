@@ -5,7 +5,7 @@ import http from 'http';
 * as in `http.STATUS_CODES`)
 */
 
-const httpStatus: IHttpStatusMap = {};
+const httpStatus: IStringMap<number> = {};
 
 Object.entries(http.STATUS_CODES).forEach(([statusCode, message]) => {
     if (message) {

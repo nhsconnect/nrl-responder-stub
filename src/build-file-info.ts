@@ -2,7 +2,7 @@ import httpStatus from './http-status';
 
 const providerData: IProviderData = require('./static/provider-data.json');
 
-const FILE_FORMATS: IFileFormats = {
+const FILE_FORMATS: IStringMap<IFileFormat> = {
     json: {
         extension: 'json',
         mimeType: 'application/fhir+json',
