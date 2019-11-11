@@ -7,26 +7,46 @@ declare global {
 
     interface IRequest extends Request { }
     interface INextFunction extends NextFunction { }
-    interface IResponse extends Response { }
-
-    interface IDetailedResponse extends Response {
+    interface IResponse extends Response {
         body?: string;
-        tests: ITest[];
     }
 
-    type TestOutcome = 'pass' | 'warn' | 'fail';
+    interface ITestCases {
+        req: IRequest;
+        res: IResponse;
 
-    interface ITest {
-        id: string;
+        add: (tcId: string, description: string) => ITestCase;
+        find: (tcId: string) => ITestCase;
+        all: () => ITestCase[];
+        allSerializable: () => ISerializableTestCase[];
+    }
+
+    interface ITestCase {
+        tcId: string;
         description: string;
-        outcome: TestOutcome;
+
+        req: IRequest;
+        res: IResponse;
+
+        hasRun: boolean;
+        success?: boolean;
+        details?: string;
+        
+        setOutcome: (success: boolean, details?: string) => void;
+        setFailureState: (newFailureState: string | boolean | null | undefined) => void;
+    }
+
+    interface ISerializableTestCase {
+        tcId: string;
+        description: string;
+        hasRun: boolean;
+        success?: boolean;
         details?: string;
     }
 
     interface IFileFormat {
         extension: string;
         mimeType: string;
-        encoding: 'utf-8' | 'binary';
     }
 
     interface IProviderData {
@@ -36,7 +56,7 @@ declare global {
     interface IProvider {
         url: string;
         patients: IStringMap<IPatient>
-        
+
     }
 
     interface IPatient {

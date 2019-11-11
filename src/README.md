@@ -1,6 +1,6 @@
 # README
 
-[/urls](/urls) provides a list of the available Provider URLs for testing, as if retrieved from pointers.
+<!-- [/urls](/urls) provides a list of the available Provider URLs for testing, as if retrieved from pointers. -->
 
 Endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root.
 

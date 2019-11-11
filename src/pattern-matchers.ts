@@ -8,10 +8,10 @@ const uuidMatcher = new RegExp(
 
 const asidMatcher = new RegExp(`^${_asidFragment}$`);
 
-const requestingSystemMatcher = new RegExp(`^https://fhir\.nhs\.uk/Id/accredited-system\|${_asidFragment}$`);
+const requestingSystemMatcher = new RegExp(`^https://fhir\\.nhs\\.uk/Id/accredited-system\\|${_asidFragment}$`);
 
 const requestingOrganizationMatcher = new RegExp(
-    `^https://fhir\.nhs\.uk/Id/ods-organization-code\|${_odsCodeFragment}$`
+    `^https://fhir\\.nhs\\.uk/Id/ods-organization-code\\|${_odsCodeFragment}$`
 );
 
 export {

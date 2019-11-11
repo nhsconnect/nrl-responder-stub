@@ -1,9 +1,20 @@
 {
+    "useFhirMimeTypes": true,
     "testServerPort": 5000,
     "logOutput": {
         "stdout": false,
-        "logsDir": true
+        "logsDir": false
     },
+
+    "logBodyMaxLength": 1000,
+
+    "urlFileMap": {
+        "https://provider1.example.com/api/patients/1/records/sample.json": "immunization-example.json",
+        "https://provider1.example.com/api/patients/1/records/sample.xml": "immunization-example.xml",
+        "https://provider1.example.com/api/patients/1/records/sample.html": "sample.html",
+        "https://provider1.example.com/api/patients/1/records/sample.pdf": "sample.pdf"
+    },
+
     "// jwtSecret": "sssshhhhhhhhh",
     
     "// odsCode":"AMS01",
