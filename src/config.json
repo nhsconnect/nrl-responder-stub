@@ -3,12 +3,13 @@
     "testServerPort": 5000,
     "logOutput": {
         "stdout": false,
-        "logsDir": false
+        "logsDir": false,
+        "htmlReports": true
     },
 
     "logBodyMaxLength": 1000,
 
-    "urlFileMap": {
+    "providerUrlFileMap": {
         "https://provider1.example.com/api/patients/1/records/sample.json": "immunization-example.json",
         "https://provider1.example.com/api/patients/1/records/sample.xml": "immunization-example.xml",
         "https://provider1.example.com/api/patients/1/records/sample.html": "sample.html",

@@ -12,7 +12,7 @@ const FILE_FORMATS: IStringMap<IFileFormat> = {
 };
 
 export default (tcs: ITestCases) => {
-    if (useFhirMimeTypes) {
+    if (useFhirMimeTypes !== false) {
         const { req, res } = tcs;
         const extension = req.params.url.match(/\.(\w+)$/)?.[1];
 

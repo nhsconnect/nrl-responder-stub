@@ -7,7 +7,7 @@ import runTestCases from './run-test-cases';
 import TestCases from './test-cases';
 import setMimeType from './set-mime-type';
 
-const { testServerPort, logOutput, logBodyMaxLength, urlFileMap } = require('./config.json');
+const { testServerPort, logOutput, logBodyMaxLength, providerUrlFileMap } = require('./config.json');
 
 const port = testServerPort || 5000;
 
@@ -60,9 +60,17 @@ const start = () => {
 
             const body = fs.readFileSync(path, 'utf8');
 
-            (res as any).body = logBodyMaxLength
-                ? truncate(body, logBodyMaxLength)
-                : body;
+            switch (logBodyMaxLength) {
+                case -1:
+                    (res as any).body = body;
+                    break;
+                case 0:
+                    // body not added to log
+                    break;
+                default:
+                    (res as any).body = truncate(body, logBodyMaxLength);
+                    break;
+            }
 
             (sendFile as any).call(this, path, ...args);
         };
@@ -111,12 +119,12 @@ const start = () => {
                 .send(`${req.params.url} is not a valid URL`);
         }
 
-        const fileName = urlFileMap[req.params.url];
+        const fileName = providerUrlFileMap[req.params.url];
         
         if (!fileName) {
             return res
                 .status(httpStatus.NotFound)
-                .send(`URL ${req.params.url} must exist as a key in urlFileMap in config.json`);
+                .send(`URL ${req.params.url} must exist as a key in providerUrlFileMap in config.json`);
         }
 
         const filePath = path.join(__dirname, 'responses', fileName);
