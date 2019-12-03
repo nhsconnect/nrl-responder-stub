@@ -1,18 +1,19 @@
-const _hexFragment = '[0-9a-fA-F]';
-const _asidFragment = '\\d{12}';
-const _odsCodeFragment = '[0-9a-zA-Z]{3,5}';
+const _hex = '[0-9a-fA-F]';
+const _asid = '\\d{12}';
+const _odsCode = '[0-9a-zA-Z]{3,5}';
+const _pipe = '(?:%7[cC]|\\|)'; // agnostic as to percent encoding
 
-const uuidMatcher = new RegExp(
-    `^${_hexFragment}{8}-${_hexFragment}{4}-${_hexFragment}{4}-${_hexFragment}{4}-${_hexFragment}{12}$`
-);
+const uuidMatcher =
+    new RegExp(`^${_hex}{8}-${_hex}{4}-${_hex}{4}-${_hex}{4}-${_hex}{12}$`);
 
-const asidMatcher = new RegExp(`^${_asidFragment}$`);
+const asidMatcher =
+    new RegExp(`^${_asid}$`);
 
-const requestingSystemMatcher = new RegExp(`^https://fhir\\.nhs\\.uk/Id/accredited-system\\|${_asidFragment}$`);
+const requestingSystemMatcher =
+    new RegExp(`^https://fhir\\.nhs\\.uk/Id/accredited-system${_pipe}${_asid}$`);
 
-const requestingOrganizationMatcher = new RegExp(
-    `^https://fhir\\.nhs\\.uk/Id/ods-organization-code\\|${_odsCodeFragment}$`
-);
+const requestingOrganizationMatcher =
+    new RegExp(`^https://fhir\\.nhs\\.uk/Id/ods-organization-code${_pipe}${_odsCode}$`);
 
 export {
     uuidMatcher,

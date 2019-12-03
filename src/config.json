@@ -1,11 +1,13 @@
 {
     "useFhirMimeTypes": true,
     "testServerPort": 5000,
-    "logOutput": {
-        "stdout": false,
-        "logsDir": false,
-        "htmlReports": true
+    "logOutputs": {
+        "// stdout": true,
+        "logsDir": true,
+        "// htmlReports": true
     },
+
+    "suppressedTestCases": [],
 
     "logBodyMaxLength": 1000,
 
@@ -14,15 +16,5 @@
         "https://provider1.example.com/api/patients/1/records/sample.xml": "immunization-example.xml",
         "https://provider1.example.com/api/patients/1/records/sample.html": "sample.html",
         "https://provider1.example.com/api/patients/1/records/sample.pdf": "sample.pdf"
-    },
-
-    "// jwtSecret": "sssshhhhhhhhh",
-    
-    "// odsCode":"AMS01",
-    "// userProfileId":"testUser123",
-    "// sslClientCert":"path/to/cert",
-    "// sslClientKey":"path/to/cert/private/key",
-    "// sslClientPassphrase":"CERT_PASSWORD",
-    "// sslCACert":"path/to/full/trust/chain/ca/root/cert",
-    "// sslInsecure": true
+    }
 }

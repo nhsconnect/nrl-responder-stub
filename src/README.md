@@ -7,7 +7,7 @@ Various configuration options are available in `config.json`.
 Properties:
 * `useFhirMimeTypes`: If `true` (default), MIME types of JSON and XML responses will be set to `application/fhir+json` and `application/fhir+xml` respectively.
 * `testServerPort`: The port over which to serve the test app.
-* `logOutput`
+* `logOutputs`
   - `stdout`: Show log output in real-time in the terminal.
   - `logsDir`: Save logs as JSON files in `/logs` directory.
 * `logBodyMaxLength`: Maximum chars of response body to log, after which the body will be truncated.
@@ -38,9 +38,9 @@ While the app is running, tests can be run against each of the records specified
 
     <pre><code><span id="urlOrigin">http://localhost:&lt;portNumber&gt;</span>/https%3A%2F%2Fprovider1.example.com%2Fapi%2Fpatients%2F1%2Frecords%2Fsample.json</code></pre>
 
-Logs are output or persisted as specified in the `logOutput` property of `config.json`.
+Logs are output or persisted as specified in the `logOutputs` property of `config.json`.
 
-When collecting and providing evidence, set `logOutput.logsDir` to `true`, run the test cases as specified, and send the JSON output as evidence.
+When collecting and providing evidence, set `logOutputs.logsDir` to `true`, run the test cases as specified, and send the JSON output as evidence.
 
 <!-- TODO -->
 <!-- JSON logs can be viewed in human-readable format by running `npm run pretty-html <fileName>`. -->

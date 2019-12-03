@@ -7,7 +7,7 @@ import runTestCases from './run-test-cases';
 import TestCases from './test-cases';
 import setMimeType from './set-mime-type';
 
-const { testServerPort, logOutput, logBodyMaxLength, providerUrlFileMap } = require('./config.json');
+const { testServerPort, logOutputs, logBodyMaxLength, providerUrlFileMap } = require('./config.json');
 
 const port = testServerPort || 5000;
 
@@ -26,12 +26,12 @@ const truncate = (str: string, maxLen: number) => {
 const writeLog = (entry: any) => {
     logs.push(entry);
 
-    if (logOutput.stdout) {
+    if (logOutputs.stdout) {
         console.log(JSON.parse(JSON.stringify(entry)));
     }
 
-    if (logOutput.logsDir) {
-        fs.writeFileSync(logPath, JSON.stringify(logs), 'utf-8');
+    if (logOutputs.logsDir) {
+        fs.writeFileSync(logPath, JSON.stringify({ logs }), 'utf-8');
     }
 };
 
@@ -153,9 +153,9 @@ const start = () => {
 
         console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server.`);
 
-        if (logOutput.logsDir) {
+        if (logOutputs.logsDir) {
             fs.mkdirSync(logDir, { recursive: true });
-            fs.writeFileSync(logPath, JSON.stringify(logs), 'utf-8'); // empty logs arr
+            fs.writeFileSync(logPath, JSON.stringify({ logs }), 'utf-8'); // empty logs arr
 
             console.log(`Logs from this session will be available at ${chalk.cyan.bold(logPath)}.`);
         }
