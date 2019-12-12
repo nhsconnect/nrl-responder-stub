@@ -1,6 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
 
 declare global {
+    type filename = string;
+
+    interface IConfig {
+        mode: 'guided' | 'exploratory';
+
+        endpointFormat: 'local' | 'integration';
+
+        useFhirMimeTypes?: boolean;
+
+        port?: number;
+
+        reportOutputs: {
+            stdout?: boolean;
+            reportsDir?: boolean;
+        };
+
+        suppressedTestIds: string[];
+
+        logBodyMaxLength?: number;
+
+        providerPathFileMap: {
+            [path: string]: filename;
+        };
+    }
+
     interface IStringMap<T> {
         [key: string]: T;
     }
@@ -11,18 +36,23 @@ declare global {
         body?: string;
     }
 
-    interface ITestCases {
+    interface ITests {
         req: IRequest;
         res: IResponse;
 
-        add: (tcId: string, description: string) => ITestCase;
-        find: (tcId: string) => ITestCase;
-        all: () => ITestCase[];
-        allSerializable: () => ISerializableTestCase[];
+        add: (testId: string, description: string) => ITest;
+        find: (testId: string) => ITest;
+        list: () => ITest[];
+        listSerializable: () => ISerializableTest[];
+        meta: {
+            suppressedTestIds: string[];
+        }
     }
 
-    interface ITestCase {
-        tcId: string;
+    type falsy = false | null | undefined | 0;
+
+    interface ITest {
+        testId: string;
         description: string;
 
         req: IRequest;
@@ -33,11 +63,11 @@ declare global {
         details?: string;
         
         setOutcome: (success: boolean, details?: string) => void;
-        setFailureState: (newFailureState: string | boolean | null | undefined) => void;
+        setFailureState: (newFailureState: string | falsy) => void;
     }
 
-    interface ISerializableTestCase {
-        tcId: string;
+    interface ISerializableTest {
+        testId: string;
         description: string;
         hasRun: boolean;
         success?: boolean;

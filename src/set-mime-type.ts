@@ -1,4 +1,6 @@
-const { useFhirMimeTypes } = require('./config.json');
+import config from './config';
+
+const { useFhirMimeTypes } = config;
 
 const FILE_FORMATS: IStringMap<IFileFormat> = {
     json: {
@@ -11,10 +13,9 @@ const FILE_FORMATS: IStringMap<IFileFormat> = {
     }
 };
 
-export default (tcs: ITestCases) => {
+export default (req: IRequest, res: IResponse) => {
     if (useFhirMimeTypes !== false) {
-        const { req, res } = tcs;
-        const extension = req.params.url.match(/\.(\w+)$/)?.[1];
+        const extension = req.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
 
         const fileFormat = extension && FILE_FORMATS[extension];
 

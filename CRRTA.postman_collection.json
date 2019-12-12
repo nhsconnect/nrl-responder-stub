@@ -71,78 +71,6 @@
 					"response": []
 				},
 				{
-					"name": "No Requesting User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
-								"exec": [
-									"pm.test(\"response is OK\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response is JSON\", () => {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/fhir+json\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response has body\", () => {\r",
-									"    pm.response.to.be.withBody;\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwtNoRequestingUser}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Ssp-TraceID",
-								"type": "text",
-								"value": "{{sspTraceId}}"
-							},
-							{
-								"key": "Ssp-From",
-								"type": "text",
-								"value": "{{sspFrom}}"
-							},
-							{
-								"key": "Ssp-To",
-								"type": "text",
-								"value": "{{sspTo}}"
-							},
-							{
-								"key": "Ssp-InteractionID",
-								"type": "text",
-								"value": "{{sspInteractionId}}"
-							}
-						],
-						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
-							"host": [
-								"{{mockSspEndpoint}}"
-							],
-							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "XML",
 					"event": [
 						{
@@ -1661,6 +1589,69 @@
 					"response": []
 				},
 				{
+					"name": "No requesting_user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
+								"exec": [
+									"pm.test(\"response is BadRequest\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtNoRequestingUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ssp-TraceID",
+								"type": "text",
+								"value": "{{sspTraceId}}"
+							},
+							{
+								"key": "Ssp-From",
+								"type": "text",
+								"value": "{{sspFrom}}"
+							},
+							{
+								"key": "Ssp-To",
+								"type": "text",
+								"value": "{{sspTo}}"
+							},
+							{
+								"key": "Ssp-InteractionID",
+								"type": "text",
+								"value": "{{sspInteractionId}}"
+							}
+						],
+						"url": {
+							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"host": [
+								"{{mockSspEndpoint}}"
+							],
+							"path": [
+								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "No reason_for_request",
 					"event": [
 						{
@@ -1683,7 +1674,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{jwtNoReason_for_request}}",
+									"value": "{{jwtNoReasonForRequest}}",
 									"type": "string"
 								}
 							]
@@ -1809,7 +1800,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{jwtNoRequesting_system}}",
+									"value": "{{jwtNoRequestingSystem}}",
 									"type": "string"
 								}
 							]
@@ -1872,7 +1863,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{jwtNoRequesting_organization}}",
+									"value": "{{jwtNoRequestingOrganization}}",
 									"type": "string"
 								}
 							]
@@ -2580,7 +2571,7 @@
 					"}));",
 					"",
 					"pm.variables.set('jwtIssuedInFuture', makeJwt({",
-					"    iss: _payload.iss + 10000,",
+					"    iat: _payload.iat + 10000,",
 					"    exp: _payload.exp + 10000,",
 					"}));",
 					"",
@@ -2589,7 +2580,8 @@
 					"}));",
 					"",
 					"pm.variables.set('jwtIssuedAfterExpiry', makeJwt({",
-					"    exp: _payload.iss - 1",
+					"    iat: _payload.iat + 20000,",
+					"    exp: _payload.iat + 10000",
 					"}));",
 					"",
 					"pm.variables.set('jwtSubNotRequestingUser', makeJwt({",

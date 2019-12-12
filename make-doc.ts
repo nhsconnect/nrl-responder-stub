@@ -1,6 +1,6 @@
-const marked = require('marked');
-const fs = require('fs');
-const path = require('path');
+import marked from 'marked';
+import fs from 'fs';
+import path from 'path';
 
 const md = fs.readFileSync(path.join(__dirname, 'src', 'README.md'), 'utf8');
 

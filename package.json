@@ -4,13 +4,14 @@
     "description": "NHS Digital NRL Consumer Record Retrieval Test App",
     "main": "main.js",
     "scripts": {
-        "// cpf": "copyfiles -u 1 \"src/static/**\" \"src/config.json\" dist",
+        "// cpf": "copyfiles -u 1 \"src/static/**\" \"src/config.ts\" dist",
         "// build-dev": "rm -rf dist && mkdir dist && node make-doc.js && npm run cpf && tsc",
         "// start-dev": "node dist/main.js",
-        "build-dev": "ts-node make-doc.ts",
-        "start-dev": "ts-node src/main.ts",
+        "build-dev": "ts-node make-doc",
+        "start-dev": "ts-node src/main",
         "s": "start-dev",
         "dev": "npm run build-dev && npm run start-dev",
+        "// tsc": "tsc --module amd --outDir \"./dist\" --outFile \"./dist/bundle.js\"",
         "tsc": "tsc"
     },
     "directories": {
@@ -23,14 +24,19 @@
     "devDependencies": {
         "@types/express": "^4.17.1",
         "@types/jsonwebtoken": "^8.3.5",
+        "@types/marked": "^0.7.2",
+        "@types/node": "^12.12.17",
         "chalk": "^2.4.2",
         "copyfiles": "^2.1.1",
         "express": "^4.17.1",
         "handlebars": "^4.5.3",
         "jsonwebtoken": "^8.5.1",
         "marked": "^0.7.0",
+        "ts-loader": "^6.2.1",
         "ts-node": "^8.4.1",
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.3",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
     },
     "dependencies": {}
 }

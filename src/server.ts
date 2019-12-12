@@ -3,21 +3,28 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import httpStatus from './http-status';
-import runTestCases from './run-test-cases';
-import TestCases from './test-cases';
+import runTests from './run-tests';
+import Tests from './tests';
 import setMimeType from './set-mime-type';
+import config from './config';
 
-const { testServerPort, logOutputs, logBodyMaxLength, providerUrlFileMap } = require('./config.json');
-
-const port = testServerPort || 5000;
+const {
+    port = 5000,
+    logBodyMaxLength = -1,
+    reportOutputs,
+    providerPathFileMap,
+    suppressedTestIds,
+    endpointFormat
+} = config;
 
 const app = express();
 
 const logs: any[] = [];
+const meta = { suppressedTestIds };
 
-const logFileName = `${new Date().toISOString().slice(0, -5).replace(/\D/g, '-')}.json`;
-const logDir = path.join(__dirname, 'logs');
-const logPath = path.join(logDir, logFileName);
+const reportFileName = `${new Date().toISOString().slice(0, -5).replace(/\D/g, '-')}.json`;
+const reportsDir = path.join(__dirname, 'reports');
+const reportPath = path.join(reportsDir, reportFileName);
 
 const truncate = (str: string, maxLen: number) => {
     return str.length <= maxLen ? str : str.slice(0, maxLen) + '...';
@@ -26,23 +33,23 @@ const truncate = (str: string, maxLen: number) => {
 const writeLog = (entry: any) => {
     logs.push(entry);
 
-    if (logOutputs.stdout) {
+    if (reportOutputs.stdout) {
         console.log(JSON.parse(JSON.stringify(entry)));
     }
 
-    if (logOutputs.logsDir) {
-        fs.writeFileSync(logPath, JSON.stringify({ logs }), 'utf-8');
+    if (reportOutputs.reportsDir) {
+        fs.writeFileSync(reportPath, JSON.stringify({ meta, logs }), 'utf-8');
     }
 };
 
-const buildLogEntry = (req: IRequest, res: IResponse, tcs?: ITestCases) => {
+const buildLogEntry = (req: IRequest, res: IResponse, tests?: ITests) => {
     const { headers, httpVersion, method, path, body: requestBody } = req;
     const { statusCode, body: responseBody } = res;
 
     const entry = {
         req: { headers, httpVersion, method, path, body: requestBody },
         res: { statusCode, headers: res.getHeaders(), body: responseBody },
-        testCases: tcs?.allSerializable()
+        tests: tests?.listSerializable()
     };
 
     if (method === 'GET') delete entry.req.body;
@@ -86,78 +93,121 @@ const start = () => {
         return res.sendFile(path.join(__dirname, 'README.html'));
     });
 
-    app.get('/:url', (req: IRequest, res: IResponse) => {
-        const tcs = new TestCases(req, res);
+    const getFromMockEndpoint = (req: IRequest, res: IResponse) => {
+        const $path = req.url.slice(1);
 
-        runTestCases(tcs);
+        if (endpointFormat === 'local' && $path.includes('/')) {
+            return res
+                .status(httpStatus.BadRequest)
+                .send('Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)');
+        }
+
+        const tests = new Tests(req, res, meta);
+
+        enum TEST_IDS {
+            responseCode = '__a__00'
+        };
+
+        runTests(tests);
+
+        tests
+            .add(TEST_IDS.responseCode, 'Request returns 2XX response code')
+            .setFailureState(false); // initialize to success
+
+        const fail = (res: IResponse, code: number, message: string) => {
+            tests
+                .find(TEST_IDS.responseCode)
+                .setFailureState(`Request failed with status ${code}: ${message}`);
+
+            return res
+                .status(code)
+                .send(message);
+        }
 
         // logging
         res.on('finish', () => {
-            const logEntry = buildLogEntry(req, res, tcs);
+            const logEntry = buildLogEntry(req, res, tests);
             writeLog(logEntry);
         });
 
         if (res.headersSent) {
             return;
-        } 
-        
-        if (tcs.all().some(tc => !tc.success)) {
+        }
+
+        if (tests.list().some(test => test.success === false)) {
             const data = {
-                failures: tcs.allSerializable().filter(tc => !tc.success)
+                failures: tests.listSerializable().filter(test => test.success === false)
             };
 
             return res
                 .status(httpStatus.BadRequest)
                 .json(data);
-        } 
-        
-        try {
-            new URL(req.params.url);
-        } catch {
-            return res
-                .status(httpStatus.BadRequest)
-                .send(`${req.params.url} is not a valid URL`);
         }
 
-        const fileName = providerUrlFileMap[req.params.url];
-        
+        let url;
+
+        if (endpointFormat === 'local') {
+            try {
+                url = decodeURIComponent($path);
+            } catch {
+                return fail(
+                    res,
+                    httpStatus.BadRequest,
+                    `${$path} cannot be percent-decoded`
+                );
+            }
+
+            try {
+                new URL(url);
+            } catch {
+                return fail(
+                    res,
+                    httpStatus.BadRequest,
+                    `${url} is not a valid URL`
+                );
+            }
+        }
+
+        const fileName = providerPathFileMap[url || $path];
+
         if (!fileName) {
-            return res
-                .status(httpStatus.NotFound)
-                .send(`URL ${req.params.url} must exist as a key in providerUrlFileMap in config.json`);
+            return fail(
+                res,
+                httpStatus.NotFound,
+                `URL ${url} must exist as a key in providerPathFileMap in config.ts`
+            );
         }
 
         const filePath = path.join(__dirname, 'responses', fileName);
 
         if (!fs.existsSync(filePath)) {
-            return res
-                .status(httpStatus.NotFound)
-                .send(`fileName ${fileName} must exist as a file in the responses folder`);
+            return fail(
+                res,
+                httpStatus.NotFound,
+                `fileName ${fileName} must exist as a file in the responses folder`
+            );
         }
 
-        setMimeType(tcs);
+        setMimeType(req, res);
 
         return res.sendFile(filePath);
-    });
+    };
 
-    app.get('*', (_req, res, next) => {
-        res
-            .status(httpStatus.BadRequest)
-            .send('Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)');
-
-        return next();
-    });
+    app.get('*', getFromMockEndpoint);
 
     app.listen(port, () => {
         console.log(`App running at ${chalk.cyan.bold.underline(`http://localhost:${port}`)}.`);
 
         console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server.`);
 
-        if (logOutputs.logsDir) {
-            fs.mkdirSync(logDir, { recursive: true });
-            fs.writeFileSync(logPath, JSON.stringify({ logs }), 'utf-8'); // empty logs arr
+        if (reportOutputs.reportsDir) {
+            if (!fs.existsSync(reportsDir)) {
+                fs.mkdirSync(reportsDir, { recursive: true });
+            }
 
-            console.log(`Logs from this session will be available at ${chalk.cyan.bold(logPath)}.`);
+            fs.writeFileSync(reportPath, JSON.stringify({ logs }), 'utf-8'); // empty logs arr
+
+            console.log(`Logs from this session will be available at ${chalk.cyan.bold(reportPath)}.`);
         }
     });
 };
