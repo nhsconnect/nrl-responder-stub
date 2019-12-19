@@ -22,14 +22,21 @@
     <div>
         <h2>Summary</h2>
 
-        {{#if meta.suppressedTestIds.length}}
-            <p>
-                <strong>Suppressed tests:</strong>
-                {{#each meta.suppressedTestIds as |item index|}}
+        
+        <p>
+            <strong>Suppressed validations:</strong>
+            {{#if meta.suppressedValidations}}
+                {{#if meta.suppressedValidations.length}}
+                    {{#each meta.suppressedValidations as |item index|}}
                     {{#if index}}, {{/if}}{{item}}
-                {{/each}}
-            </p>
-        {{/if}}
+                    {{/each}}
+                {{else}}
+                    All
+                {{/if}}
+            {{else}}
+                None
+            {{/if}}
+        </p>
     </div>
     
     <h2>Requests</h2>
@@ -98,30 +105,24 @@
                     <div class="col-md-12">&nbsp;</div>
 
                     <div class="col-md-3">Response Body</div>
-                    <div class="response-body col-md-9" style="overflow: auto;max-height:100px;">
-                        {{#if res.body}}
-                            {{res.body}}
-                        {{else}}
-                            &nbsp
-                        {{/if}}
-                    </div>
+                    <div class="response-body col-md-9" style="overflow: auto;max-height:100px;white-space:pre-wrap;">{{#if res.body}}{{res.body}}{{else}}&nbsp;{{/if}}</div>
                     
                     <div class="col-md-12">&nbsp;</div>
 
                     <div class="col-md-12">
-                        <h4>Tests</h4>
+                        <h4>Validations</h4>
 
                         <p>
-                            Total: <strong>{{tests.all.length}}</strong>
+                            Total: <strong>{{validations.all.length}}</strong>
                         </p>
 
                         <details>
-                            <summary{{#unless tests.passed.length}} tabindex="-1" class="disabled"{{/unless}}>
-                                Passed: <strong class="success">{{tests.passed.length}}</strong>
+                            <summary{{#unless validations.passed.length}} tabindex="-1" class="disabled"{{/unless}}>
+                                Passed: <strong class="success">{{validations.passed.length}}</strong>
                             </summary>
-                            {{#each tests.passed}}
+                            {{#each validations.passed}}
                                 <div>
-                                    <h5><strong>{{testId}}</strong> <em>{{description}}</em></h5>
+                                    <h5><strong>{{validationId}}</strong> <em>{{description}}</em></h5>
                                     {{#if details}}
                                         <blockquote>
                                             {{details}}
@@ -131,13 +132,13 @@
                             {{/each}}
                         </details>
 
-                        <details{{#if tests.failed.length}} open{{/if}}>
-                            <summary{{#unless tests.failed.length}} tabindex="-1" class="disabled"{{/unless}}>
-                                Failed: <strong class="danger">{{tests.failed.length}}</strong>
+                        <details{{#if validations.failed.length}} open{{/if}}>
+                            <summary{{#unless validations.failed.length}} tabindex="-1" class="disabled"{{/unless}}>
+                                Failed: <strong class="danger">{{validations.failed.length}}</strong>
                             </summary>
-                            {{#each tests.failed}}
+                            {{#each validations.failed}}
                                 <div>
-                                    <h5><strong>{{testId}}</strong> <em>{{description}}</em></h5>
+                                    <h5><strong>{{validationId}}</strong> <em>{{description}}</em></h5>
                                     {{#if details}}
                                         <blockquote>
                                             {{details}}
@@ -148,12 +149,12 @@
                         </details>
 
                         <details>
-                            <summary {{#unless tests.notRun.length}} tabindex="-1" class="disabled"{{/unless}}>
-                                Not run: <strong class="neutral">{{tests.notRun.length}}</strong>
+                            <summary {{#unless validations.notRun.length}} tabindex="-1" class="disabled"{{/unless}}>
+                                Not run: <strong class="neutral">{{validations.notRun.length}}</strong>
                             </summary>
-                            {{#each tests.notRun}}
+                            {{#each validations.notRun}}
                                 <div>
-                                    <h5><strong>{{testId}}</strong> <em>{{description}}</em></h5>
+                                    <h5><strong>{{validationId}}</strong> <em>{{description}}</em></h5>
                                     {{#if details}}
                                         <blockquote>
                                             {{details}}

@@ -2,7 +2,7 @@
 
 ## Setup
 
-Various configuration options are available in `config.ts`.
+Various configuration options are available in `config.user.ts`.
 
 Properties:
 
@@ -26,7 +26,7 @@ Properties:
   - `-1` logs the entire response body.
   - `0` logs no response body.
 
-* `providerPathFileMap`: To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property
+* `pathFileMapping`: To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property
   -  If `endpointFormat` is `local`, the key of each mapping must be a valid URL, but it doesn&rsquo;t have to point to anything.
 
 
@@ -42,7 +42,7 @@ While the app is running, tests can be run against each of the records specified
 
 2.  Send a `GET` request to the relevant endpoint from the application under test.
     
-    If `endpointFormat` is `local`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `providerPathFileMap` property of `config.ts`.
+    If `endpointFormat` is `local`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property of `config.user.ts`.
 
     For example:
 
@@ -53,7 +53,7 @@ While the app is running, tests can be run against each of the records specified
 
     <pre><code><span id="urlOrigin">http://localhost:&lt;portNumber&gt;</span>/https%3A%2F%2Fprovider1.example.com%2Fapi%2Fpatients%2F1%2Frecords%2Fsample.json</code></pre>
 
-Logs are output or persisted as specified in the `reportOutputs` property of `config.ts`.
+Logs are output or persisted as specified in the `reportOutputs` property of `config.user.ts`.
 
 When collecting and providing evidence, set `reportOutputs.reportsDir` to `true`, run the tests as specified, and send the JSON output as evidence.
 

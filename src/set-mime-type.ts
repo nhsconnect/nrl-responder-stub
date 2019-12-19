@@ -14,7 +14,7 @@ const FILE_FORMATS: IStringMap<IFileFormat> = {
 };
 
 export default (req: IRequest, res: IResponse) => {
-    if (useFhirMimeTypes !== false) {
+    if (useFhirMimeTypes) {
         const extension = req.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
 
         const fileFormat = extension && FILE_FORMATS[extension];

@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 declare global {
     type filename = string;
 
+    type IConfigOverrides = Partial<IConfig>;
+
     interface IConfig {
         mode: 'guided' | 'exploratory';
 
@@ -10,18 +12,18 @@ declare global {
 
         useFhirMimeTypes?: boolean;
 
-        port?: number;
+        port: number;
 
         reportOutputs: {
             stdout?: boolean;
             reportsDir?: boolean;
         };
 
-        suppressedTestIds: string[];
+        suppressedValidations: boolean | string[];
 
-        logBodyMaxLength?: number;
+        logBodyMaxLength: number;
 
-        providerPathFileMap: {
+        pathFileMapping: {
             [path: string]: filename;
         };
     }
@@ -36,23 +38,23 @@ declare global {
         body?: string;
     }
 
-    interface ITests {
+    interface IValidations {
         req: IRequest;
         res: IResponse;
 
-        add: (testId: string, description: string) => ITest;
-        find: (testId: string) => ITest;
-        list: () => ITest[];
-        listSerializable: () => ISerializableTest[];
+        add: (validationId: string, description: string) => IValidation;
+        find: (validationId: string) => IValidation;
+        list: () => IValidation[];
+        listSerializable: () => ISerializableValidation[];
         meta: {
-            suppressedTestIds: string[];
+            suppressedValidations: boolean | string[];
         }
     }
 
     type falsy = false | null | undefined | 0;
 
-    interface ITest {
-        testId: string;
+    interface IValidation {
+        validationId: string;
         description: string;
 
         req: IRequest;
@@ -66,8 +68,8 @@ declare global {
         setFailureState: (newFailureState: string | falsy) => void;
     }
 
-    interface ISerializableTest {
-        testId: string;
+    interface ISerializableValidation {
+        validationId: string;
         description: string;
         hasRun: boolean;
         success?: boolean;

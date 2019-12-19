@@ -36,8 +36,8 @@ const fmtHeaders = (headers: object) => {
     return formattedHeaders;
 };
 
-interface ISerializableTest {
-    testId: string;
+interface ISerializableValidation {
+    validationId: string;
     description: string;
     hasRun: boolean;
     success?: boolean;
@@ -47,15 +47,15 @@ interface ISerializableTest {
 interface ILog {
     req: { headers: object };
     res: { headers: object };
-    tests: ISerializableTest[];
+    validations: ISerializableValidation[];
 }
 
 const splitNumbers = (str: string) => str.split(/(\d+(?:\.\d+)?)/).map((el, idx) => {
     return idx % 2 ? parseFloat(el) : el;
 });
 
-const sortTests = (a: ISerializableTest, b: ISerializableTest) => {
-    const [aId, bId] = [a, b].map(test => test.testId);
+const sortValidations = (a: ISerializableValidation, b: ISerializableValidation) => {
+    const [aId, bId] = [a, b].map(validation => validation.validationId);
 
     const [splitIdA, splitIdB] = [aId, bId].map(splitNumbers);
 
@@ -79,12 +79,12 @@ data.logs.forEach((log: ILog) => {
 
     const [all, passed, failed, notRun] = [
         () => true,
-        (test: ISerializableTest) => test.hasRun && test.success,
-        (test: ISerializableTest) => test.hasRun && !test.success,
-        (test: ISerializableTest) => !test.hasRun,
-    ].map(filterFn => log.tests.filter(filterFn).sort(sortTests));
+        (validation: ISerializableValidation) => validation.hasRun && validation.success,
+        (validation: ISerializableValidation) => validation.hasRun && !validation.success,
+        (validation: ISerializableValidation) => !validation.hasRun,
+    ].map(filterFn => log.validations.filter(filterFn).sort(sortValidations));
 
-    (log as any).tests = { all, passed, failed, notRun };
+    (log as any).validations = { all, passed, failed, notRun };
 });
 
 fs.readFile(path.join(__dirname, 'static/report-template.html'), 'utf-8', (error: any, source: any) => {
