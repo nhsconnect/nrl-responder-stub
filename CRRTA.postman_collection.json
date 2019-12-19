@@ -16,18 +16,18 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is OK\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response is JSON\", () => {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/fhir+json\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response has body\", () => {\r",
-									"    pm.response.to.be.withBody;\r",
-									"});\r",
+									"pm.test(\"response is OK\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response is JSON\", () => {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/fhir+json\");",
+									"});",
+									"",
+									"pm.test(\"response has body\", () => {",
+									"    pm.response.to.be.withBody;",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -59,12 +59,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -78,18 +78,18 @@
 							"script": {
 								"id": "80a94487-c754-40f1-84fc-f98ae3a248af",
 								"exec": [
-									"pm.test(\"response is OK\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response is XML\", () => {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/fhir+xml\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response has body\", () => {\r",
-									"    pm.response.to.be.withBody;\r",
-									"});\r",
+									"pm.test(\"response is OK\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response is XML\", () => {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/fhir+xml\");",
+									"});",
+									"",
+									"pm.test(\"response has body\", () => {",
+									"    pm.response.to.be.withBody;",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -121,12 +121,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.xml",
+							"raw": "{{mockSspEndpoint}}/{{xmlPath}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.xml"
+								"{{xmlPath}}"
 							]
 						}
 					},
@@ -140,18 +140,18 @@
 							"script": {
 								"id": "50da426b-f2c8-487e-8145-f57545806f0f",
 								"exec": [
-									"pm.test(\"response is OK\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response is HTML\", () => {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response has body\", () => {\r",
-									"    pm.response.to.be.withBody;\r",
-									"});\r",
+									"pm.test(\"response is OK\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response is HTML\", () => {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");",
+									"});",
+									"",
+									"pm.test(\"response has body\", () => {",
+									"    pm.response.to.be.withBody;",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -183,12 +183,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.html",
+							"raw": "{{mockSspEndpoint}}/{{htmlPath}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.html"
+								"{{htmlPath}}"
 							]
 						}
 					},
@@ -202,18 +202,18 @@
 							"script": {
 								"id": "8443ccc7-9e47-4507-82cf-68ce91b987df",
 								"exec": [
-									"pm.test(\"response is OK\", () => {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response is PDF\", () => {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/pdf\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response has body\", () => {\r",
-									"    pm.response.to.be.withBody;\r",
-									"});\r",
+									"pm.test(\"response is OK\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response is PDF\", () => {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/pdf\");",
+									"});",
+									"",
+									"pm.test(\"response has body\", () => {",
+									"    pm.response.to.be.withBody;",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -245,12 +245,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.pdf",
+							"raw": "{{mockSspEndpoint}}/{{pdfPath}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.pdf"
+								"{{pdfPath}}"
 							]
 						}
 					},
@@ -270,8 +270,8 @@
 							"script": {
 								"id": "b78ccd15-cf5a-44a2-9461-f5772bee19fe",
 								"exec": [
-									"pm.test(\"response is NotFound\", () => {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"response is NotFound\", () => {",
+									"    pm.response.to.have.status(404);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -322,9 +322,16 @@
 							"script": {
 								"id": "467ef630-6985-4b6a-a4e6-698c28318e40",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
+									"{",
+									"    const responseCode = pm.environment.get('ENV_NAME') === 'LOCAL'",
+									"        ? 400",
+									"        : 404;",
+									"",
+									"    pm.test(\"response is BadRequest\", () => {",
+									"        pm.response.to.have.status(responseCode);",
+									"    });",
+									"}",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -374,8 +381,8 @@
 							"script": {
 								"id": "4ea156b1-f62d-449d-ad8d-1a5763c6e778",
 								"exec": [
-									"pm.test(\"response is NotFound\", () => {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"response is NotFound\", () => {",
+									"    pm.response.to.have.status(404);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -426,8 +433,8 @@
 							"script": {
 								"id": "2d0eaa38-8905-4760-9ee3-62f02d24ceb8",
 								"exec": [
-									"pm.test(\"response is NotFound\", () => {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"response is NotFound\", () => {",
+									"    pm.response.to.have.status(404);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -478,8 +485,8 @@
 							"script": {
 								"id": "5ac2889c-56ee-4db0-a659-979d63ed9b0b",
 								"exec": [
-									"pm.test(\"response is NotFound\", () => {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"response is NotFound\", () => {",
+									"    pm.response.to.have.status(404);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -530,8 +537,8 @@
 							"script": {
 								"id": "5ac2889c-56ee-4db0-a659-979d63ed9b0b",
 								"exec": [
-									"pm.test(\"response is NotFound\", () => {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"response is NotFound\", () => {",
+									"    pm.response.to.have.status(404);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -582,9 +589,17 @@
 							"script": {
 								"id": "5ac2889c-56ee-4db0-a659-979d63ed9b0b",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
+									"{",
+									"    ",
+									"    const responseCode = pm.environment.get('ENV_NAME') === 'LOCAL'",
+									"        ? 400",
+									"        : 404;",
+									"",
+									"    pm.test(\"response is BadRequest\", () => {",
+									"        pm.response.to.have.status(responseCode);",
+									"    });",
+									"}",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -647,8 +662,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -681,12 +696,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -700,8 +715,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -734,12 +749,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -753,8 +768,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -787,12 +802,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -806,8 +821,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -840,12 +855,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -859,8 +874,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -892,12 +907,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -911,8 +926,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -944,12 +959,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -963,8 +978,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -996,12 +1011,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1015,8 +1030,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1048,12 +1063,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1067,8 +1082,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1100,12 +1115,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1119,8 +1134,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1152,12 +1167,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1171,8 +1186,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1204,12 +1219,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1223,8 +1238,8 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1256,12 +1271,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1281,9 +1296,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1325,12 +1340,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1344,9 +1359,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1388,12 +1403,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1407,9 +1422,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1451,12 +1466,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1470,9 +1485,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1514,12 +1529,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1533,9 +1548,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1577,12 +1592,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1596,9 +1611,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1640,12 +1655,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1659,9 +1674,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1703,12 +1718,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1722,9 +1737,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1766,12 +1781,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1785,9 +1800,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1829,12 +1844,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1848,9 +1863,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1892,12 +1907,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1911,9 +1926,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -1955,12 +1970,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -1974,9 +1989,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2018,12 +2033,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2037,9 +2052,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2081,12 +2096,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2100,9 +2115,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2144,12 +2159,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2163,9 +2178,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2207,12 +2222,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2226,9 +2241,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2270,12 +2285,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2289,9 +2304,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2333,12 +2348,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2352,9 +2367,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2396,12 +2411,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2415,9 +2430,9 @@
 							"script": {
 								"id": "9ac21eda-c29c-4161-90d4-e9cd1bb21c2e",
 								"exec": [
-									"pm.test(\"response is BadRequest\", () => {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
+									"pm.test(\"response is BadRequest\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -2459,12 +2474,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{mockSspEndpoint}}/https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json",
+							"raw": "{{mockSspEndpoint}}/{{path}}",
 							"host": [
 								"{{mockSspEndpoint}}"
 							],
 							"path": [
-								"https%3A%2F%2F{{provider}}.example.com%2Fapi%2Fpatients%2F{{patient}}%2Frecords%2F{{record}}.json"
+								"{{path}}"
 							]
 						}
 					},
@@ -2491,7 +2506,9 @@
 				"id": "755492cf-027e-4e96-aca8-88b2712cc694",
 				"type": "text/javascript",
 				"exec": [
-					"// modified from https://gist.github.com/corbanb/db03150abbe899285d6a86cc480f674d",
+					"/* ",
+					" * modified from https://gist.github.com/corbanb/db03150abbe899285d6a86cc480f674d",
+					" */",
 					"",
 					"const base64url = source => {",
 					"    // Encode in classical base64",
@@ -2608,6 +2625,25 @@
 					"pm.variables.set('jwtRequestingOrganizationFormat', makeJwt({",
 					"    requesting_organization: '0000'",
 					"}));",
+					"",
+					"/*",
+					" * endpoint format stuff",
+					" */",
+					"",
+					"const barePath = \"api/patients/1/records/sample.json\";",
+					"const providerUrl = `https://provider1.example.com/${barePath}`;",
+					"const sspPath = encodeURIComponent(providerUrl);",
+					"",
+					"const path = pm.environment.get('ENV_NAME') === 'LOCAL'",
+					"    ? sspPath",
+					"    : barePath;",
+					"",
+					"const pathSansExtension = path.replace(/\\.json$/, '');",
+					"",
+					"pm.variables.set('path', path);",
+					"pm.variables.set('xmlPath', pathSansExtension + '.xml');",
+					"pm.variables.set('pdfPath', pathSansExtension + '.pdf');",
+					"pm.variables.set('htmlPath', pathSansExtension + '.html');",
 					""
 				]
 			}
