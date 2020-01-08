@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>README</title>
+    <title>Documentation | Consumer Record Retrieval Testing App</title>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
     <style>
@@ -24,13 +24,26 @@
         .message-body p:last-child {
             margin-bottom: 0;
         }
+
+        .notice {
+            background: #ffffaa;
+            color: #3b2805;
+            border-left: 4px solid #865d11;
+            padding: 10px;
+        }
+
+        .notice p:last-child {
+            margin-bottom: 0;
+        }
     </style>
 </head>
-<body class="markdown-body">
-    {{md}}
+<body>
+    <main class="markdown-body">{{md}}</main>
 
     <script>
-        if (document.querySelector('#urlOrigin') && window.location.origin) {
+        if (document.querySelector('#urlOrigin')
+            && window.location.origin
+            && /^https?:\/\//.test(window.location.origin)) {
             document.querySelector('#urlOrigin').textContent = window.location.origin;
         }
     </script>

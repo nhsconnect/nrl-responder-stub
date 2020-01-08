@@ -1,5 +1,7 @@
 import config from './config';
 
+const { pathFileMapping, endpointFormat } = config;
+
 interface ITestCase {
     name: string;
     endpoint: string;
@@ -10,19 +12,17 @@ interface ITestCase {
 }
 
 const getSuccessEndpointForFileExt = (ext: string) => {
-    const endpoint = Object.keys(config.pathFileMapping)
-        .find((key) => config.pathFileMapping[key].endsWith(`.${ext}`));
+    const endpoint = Object.keys(pathFileMapping)
+        .find(key => pathFileMapping[key].endsWith(`.${ext}`));
 
     if (!endpoint) {
         throw new TypeError(`config.pathFileMapping must contain an endpoint for ${ext} filetype`);
     }
 
-    return endpoint;
+    return endpointFormat === 'local' ? encodeURIComponent(endpoint) : endpoint;
 };
 
-const get404Endpoint = () => {
-    return '%F0%9F%A6%84';
-};
+const get404Endpoint = () => encodeURIComponent('\u{1f984}');
 
 const guidedTestPlan: ITestCase[] /* TODO */ = [
     {

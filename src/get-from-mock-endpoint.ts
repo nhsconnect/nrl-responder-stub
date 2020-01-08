@@ -11,14 +11,17 @@ import httpStatus from './http-status';
 import config from './config';
 
 import { meta, buildLogEntry, writeLog } from './logs';
-import { NextFunction } from 'express';
 
 const {
     pathFileMapping,
     endpointFormat,
 } = config;
 
-const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) => {
+const VALIDATION_IDS = {
+    responseCode: `${globalId()}`
+};
+
+const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction) => {
     const $path = req.url.slice(1);
 
     if (endpointFormat === 'local' && $path.includes('/')) {
@@ -29,10 +32,6 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) 
         return next();
     }
 
-    const VALIDATION_IDS = {
-        responseCode: `${globalId()}`
-    };
-
     const validations = new Validations(req, res, meta);
 
     runValidations(validations);
@@ -41,10 +40,10 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) 
         .add(VALIDATION_IDS.responseCode, 'Request returns 2XX response code')
         .setFailureState(false); // initialize to success
 
-    const fail = (res: IResponse, code: number, message: string) => {
+    const fail = (res: IResponse, code: number, message: any) => {
         validations
             .find(VALIDATION_IDS.responseCode)
-            .setFailureState(`Request failed with status ${code}: ${message}`);
+            .setFailureState(`Request failed with status ${code}: ${JSON.stringify(message)}`);
 
         res
             .status(code)
@@ -68,11 +67,11 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) 
             failures: validations.listSerializable().filter(validation => validation.success === false)
         };
 
-        res
-            .status(httpStatus.BadRequest)
-            .json(data);
-
-        return next();
+        return fail(
+            res,
+            httpStatus.BadRequest,
+            data
+        );
     }
 
     let url;
@@ -81,25 +80,21 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) 
         try {
             url = decodeURIComponent($path);
         } catch {
-            fail(
+            return fail(
                 res,
                 httpStatus.BadRequest,
                 `${$path} cannot be percent-decoded`
             );
-
-            return next();
         }
 
         try {
             new URL(url);
         } catch {
-            fail(
+            return fail(
                 res,
                 httpStatus.BadRequest,
                 `${url} is not a valid URL`
             );
-
-            return next();
         }
     }
 
@@ -108,32 +103,27 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: NextFunction) 
     const fileName = pathFileMapping[urlOrPath];
 
     if (!fileName) {
-        fail(
+        return fail(
             res,
             httpStatus.NotFound,
             `A filename corresponding to path ${urlOrPath} must exist in pathFileMapping in configuration`
         );
 
-        return next();
     }
 
     const filePath = path.join(__dirname, 'responses', fileName);
 
     if (!fs.existsSync(filePath)) {
-        fail(
+        return fail(
             res,
             httpStatus.NotFound,
             `fileName ${fileName} must exist as a file in the responses folder`
         );
-
-        return next();
     }
 
     setMimeType(req, res);
 
-    res.sendFile(filePath);
-
-    return next();
+    return res.sendFile(filePath, next); // next fn must be in callback - see https://stackoverflow.com/a/33767854
 };
 
 export default getFromMockEndpoint;

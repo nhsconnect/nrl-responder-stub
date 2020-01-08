@@ -11,6 +11,7 @@ declare global {
         endpointFormat: 'local' | 'integration';
 
         useFhirMimeTypes?: boolean;
+        explicitlySetUtf8?: boolean;
 
         port: number;
 
@@ -32,23 +33,21 @@ declare global {
         [key: string]: T;
     }
 
-    interface IRequest extends Request { }
-    interface INextFunction extends NextFunction { }
-    interface IResponse extends Response {
-        body?: string;
-    }
+    type IRequest = Request;
+    type IResponse = Response & { body?: string };
+    type INextFunction = NextFunction;
 
     interface IValidations {
         req: IRequest;
         res: IResponse;
+        meta: {
+            suppressedValidations: boolean | string[];
+        }
 
         add: (validationId: string, description: string) => IValidation;
         find: (validationId: string) => IValidation;
         list: () => IValidation[];
         listSerializable: () => ISerializableValidation[];
-        meta: {
-            suppressedValidations: boolean | string[];
-        }
     }
 
     type falsy = false | null | undefined | 0;
@@ -78,7 +77,8 @@ declare global {
 
     interface IFileFormat {
         extension: string;
-        mimeType: string;
+        baseMimeType: string;
+        fhirMimeType: string;
     }
 
     interface IProviderData {

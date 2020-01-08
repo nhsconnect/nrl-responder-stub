@@ -2,6 +2,10 @@ import marked from 'marked';
 import fs from 'fs';
 import path from 'path';
 
+marked.setOptions({
+    smartypants: true,
+});
+
 const md = fs.readFileSync(path.join(__dirname, 'src', 'README.md'), 'utf8');
 
 const htmlTemplate = fs.readFileSync(path.join(__dirname, 'src', 'README.template.html'), 'utf8');

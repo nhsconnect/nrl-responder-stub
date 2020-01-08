@@ -1,26 +1,32 @@
 import config from './config';
 
-const { useFhirMimeTypes } = config;
+const { useFhirMimeTypes, explicitlySetUtf8 } = config;
 
 const FILE_FORMATS: IStringMap<IFileFormat> = {
     json: {
         extension: 'json',
-        mimeType: 'application/fhir+json'
+        baseMimeType: 'application/json',
+        fhirMimeType: 'application/fhir+json',
     },
     xml: {
         extension: 'xml',
-        mimeType: 'application/fhir+xml'
+        baseMimeType: 'application/xml',
+        fhirMimeType: 'application/fhir+xml',
     }
 };
 
 export default (req: IRequest, res: IResponse) => {
-    if (useFhirMimeTypes) {
-        const extension = req.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
+    const extension = req.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
 
-        const fileFormat = extension && FILE_FORMATS[extension];
+    const fileFormat = extension && FILE_FORMATS[extension];
 
-        if (fileFormat) {
-            res.type(fileFormat.mimeType)
+    if (fileFormat) {
+        let contentType = fileFormat[useFhirMimeTypes ? 'fhirMimeType' : 'baseMimeType'];
+
+        if (explicitlySetUtf8) {
+            contentType += ';charset=utf-8';
         }
+
+        res.type(contentType);
     }
 };

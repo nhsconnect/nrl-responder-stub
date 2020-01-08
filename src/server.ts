@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Errback, Response } from 'express';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -26,27 +26,28 @@ const truncate = (str: string, maxLen: number) => {
 
 const start = () => {
     // populate `res.body` on `sendFile`, for logging purposes
-    app.use(function (_req, res, next) {
+
+    app.use(function (_req, res: IResponse, next) {
+
         const sendFile = res.sendFile;
 
-        res.sendFile = function (this: any, path: string, ...args: any) {
-            // const filename = path.match(/[^\\/]+$/)?.[0];
+        res.sendFile = function (this: any, path: string, fn?: Errback | undefined) {
 
             const body = fs.readFileSync(path, 'utf8');
 
             switch (logBodyMaxLength) {
                 case -1:
-                    (res as any).body = body;
+                    res.body = body;
                     break;
                 case 0:
-                    // body not added to log
+                    // noop - body not added to log
                     break;
                 default:
-                    (res as any).body = truncate(body, logBodyMaxLength);
+                    res.body = truncate(body, logBodyMaxLength);
                     break;
             }
 
-            (sendFile as any).call(this, path, ...args);
+            sendFile.call(this, path, fn);
         };
 
         return next();
