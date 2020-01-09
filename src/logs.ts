@@ -13,16 +13,15 @@ import guidedTestPlan from './guided-test-plan';
 
 const {
     reportOutputs,
-    suppressedValidations,
 } = config;
 
-const meta = { suppressedValidations, config };
+const meta = { config };
 
 if (config.mode === 'guided') {
     (meta as any).guidedTestPlan = guidedTestPlan;
 }
 
-const writeLog = (entry: any) => {
+const writeLog = (entry: ILogEntry) => {
     logs.push(entry);
 
     if (reportOutputs.stdout) {
@@ -34,12 +33,11 @@ const writeLog = (entry: any) => {
     }
 };
 
-
 const buildLogEntry = (req: IRequest, res: IResponse, validations?: IValidations) => {
     const { headers, httpVersion, method, path, body: requestBody } = req;
     const { statusCode, body: responseBody } = res;
 
-    const entry = {
+    const entry: ILogEntry = {
         req: { headers, httpVersion, method, path, body: requestBody },
         res: { statusCode, headers: res.getHeaders(), body: responseBody },
         validations: validations?.listSerializable()

@@ -10,7 +10,7 @@ import { globalId } from './ids';
 import httpStatus from './http-status';
 import config from './config';
 
-import { meta, buildLogEntry, writeLog } from './logs';
+import { buildLogEntry, writeLog } from './logs';
 
 const {
     pathFileMapping,
@@ -21,8 +21,10 @@ const VALIDATION_IDS = {
     responseCode: `${globalId()}`
 };
 
-const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction) => {
+const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction, testCase?: ITestCase) => {
     const $path = req.url.slice(1);
+
+    // console.log(testCase); // TODO
 
     if (endpointFormat === 'local' && $path.includes('/')) {
         res
@@ -32,7 +34,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction)
         return next();
     }
 
-    const validations = new Validations(req, res, meta);
+    const validations = new Validations(req, res);
 
     runValidations(validations);
 
@@ -123,7 +125,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction)
 
     setMimeType(req, res);
 
-    return res.sendFile(filePath, next); // next fn must be in callback - see https://stackoverflow.com/a/33767854
+    return res.sendFile(filePath, next); // `next` fn must be in callback - see https://stackoverflow.com/a/33767854
 };
 
 export default getFromMockEndpoint;

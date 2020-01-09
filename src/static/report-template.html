@@ -18,26 +18,6 @@
 <body>
   <div class="container">
     <h1>Consumer Record Retrieval Report</h1>
-
-    <div>
-        <h2>Summary</h2>
-
-        
-        <p>
-            <strong>Suppressed validations:</strong>
-            {{#if meta.suppressedValidations}}
-                {{#if meta.suppressedValidations.length}}
-                    {{#each meta.suppressedValidations as |item index|}}
-                    {{#if index}}, {{/if}}{{item}}
-                    {{/each}}
-                {{else}}
-                    All
-                {{/if}}
-            {{else}}
-                None
-            {{/if}}
-        </p>
-    </div>
     
     <h2>Requests</h2>
     

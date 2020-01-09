@@ -24,7 +24,7 @@ const data: any = JSON.parse(
     fs.readFileSync(path.join(dirName, fileName), 'utf8')
 );
 
-const fmtHeaders = (headers: object) => {
+const formatHeaders = (headers: object) => {
     const formattedHeaders: { name: string, value: string }[] = [];
     
     Object.entries(headers).forEach(([$name, value]) => {
@@ -54,17 +54,17 @@ const splitNumbers = (str: string) => str.split(/(\d+(?:\.\d+)?)/).map((el, idx)
     return idx % 2 ? parseFloat(el) : el;
 });
 
-const sortValidations = (a: ISerializableValidation, b: ISerializableValidation) => {
-    const [aId, bId] = [a, b].map(validation => validation.validationId);
+const sortValidations = (validationA: ISerializableValidation, validationB: ISerializableValidation) => {
+    const [idA, idB] = [validationA, validationB].map(validation => validation.validationId);
 
-    const [splitIdA, splitIdB] = [aId, bId].map(splitNumbers);
+    const [splitIdA, splitIdB] = [idA, idB].map(splitNumbers);
 
     while ([splitIdA, splitIdB].every(arr => arr.length)) {
-        const [currA, currB] = [splitIdA, splitIdB]
+        const [currentA, currentB] = [splitIdA, splitIdB]
             .map(arr => arr.shift() ?? -Infinity);
 
-        if (currA !== currB) {
-            return currA > currB ? 1 : -1;
+        if (currentA !== currentB) {
+            return currentA > currentB ? 1 : -1;
         }
     }
 
@@ -74,8 +74,8 @@ const sortValidations = (a: ISerializableValidation, b: ISerializableValidation)
 data.logs.forEach((log: ILog) => {
     // TODO
 
-    log.req.headers = fmtHeaders(log.req.headers);
-    log.res.headers = fmtHeaders(log.res.headers);
+    log.req.headers = formatHeaders(log.req.headers);
+    log.res.headers = formatHeaders(log.res.headers);
 
     const [all, passed, failed, notRun] = [
         () => true,

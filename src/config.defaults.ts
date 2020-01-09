@@ -9,8 +9,6 @@ const defaultConfig: IConfig = {
         reportsDir: true,
     },
 
-    suppressedValidations: [],
-
     logBodyMaxLength: 1000,
 
     pathFileMapping: {

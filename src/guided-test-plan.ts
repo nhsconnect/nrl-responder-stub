@@ -2,15 +2,6 @@ import config from './config';
 
 const { pathFileMapping, endpointFormat } = config;
 
-interface ITestCase {
-    name: string;
-    endpoint: string;
-    expect: {
-        responseCode: number;
-        validations: boolean | string[];
-    };
-}
-
 const getSuccessEndpointForFileExt = (ext: string) => {
     const endpoint = Object.keys(pathFileMapping)
         .find(key => pathFileMapping[key].endsWith(`.${ext}`));
@@ -22,9 +13,7 @@ const getSuccessEndpointForFileExt = (ext: string) => {
     return endpointFormat === 'local' ? encodeURIComponent(endpoint) : endpoint;
 };
 
-const get404Endpoint = () => encodeURIComponent('\u{1f984}');
-
-const guidedTestPlan: ITestCase[] /* TODO */ = [
+const guidedTestPlan: ITestCase[] = [
     {
         name: 'PDF retrieval',
         endpoint: getSuccessEndpointForFileExt('pdf'),
@@ -34,10 +23,18 @@ const guidedTestPlan: ITestCase[] /* TODO */ = [
         },
     },
     {
-        name: 'Not found',
-        endpoint: get404Endpoint(),
+        name: 'JSON retrieval',
+        endpoint: getSuccessEndpointForFileExt('json'),
         expect: {
-            responseCode: 404,
+            responseCode: 200,
+            validations: ['1', '2']
+        },
+    },
+    {
+        name: 'Not found',
+        endpoint: 'INVALID_ENDPOINT',
+        expect: {
+            responseCode: 400,
             validations: [], // none
         },
     },

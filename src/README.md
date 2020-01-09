@@ -94,4 +94,3 @@ Property                   | Type                         | Details
 `reportOutputs.reportsDir` | `boolean`                    | Save reports as JSON files in `/reports` directory.
 `logBodyMaxLength`         | `number`                     | Maximum chars of response body to log, after which the body will be truncated.<br>• `-1` logs the entire response body.<br>• `0` logs no response body.
 `pathFileMapping`          | `{ [path: string]: string }` | To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property.<br><br>If `endpointFormat` is `local`, the key of each mapping must be a valid URL, but it doesn&rsquo;t have to point to anything.
-<!-- `suppressedValidations`    | `string[]`                   | TODO -->

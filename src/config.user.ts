@@ -1,5 +1,5 @@
 const userConfig: IConfigOverrides = {
-    // mode: 'guided',
+    mode: 'guided',
     // endpointFormat: 'integration',
     // useFhirMimeTypes: true,
     // explicitlySetUtf8: true,
@@ -9,8 +9,6 @@ const userConfig: IConfigOverrides = {
     //     reportsDir: true,
     //     stdout: true,
     // },
-
-    // suppressedValidations: [],
 
     // logBodyMaxLength: 1000,
 

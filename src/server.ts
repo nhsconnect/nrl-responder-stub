@@ -1,4 +1,4 @@
-import express, { Errback, Response } from 'express';
+import express, { Errback } from 'express';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -61,23 +61,42 @@ const start = () => {
         return res.sendFile(path.join(__dirname, 'README.html'));
     });
 
+
     if (mode === 'guided') {
-        guidedTestPlan.reduce(async (promiseChain, testCase) => {
-            await promiseChain;
+        (async () => {
+            await guidedTestPlan.reduce(async (promiseChain, testCase) => {
+                await promiseChain;
 
-            const endpoint = normaliseRootEndpoint(testCase.endpoint).withSlash;
+                const endpoint = normaliseRootEndpoint(testCase.endpoint).withSlash;
 
-            const nextPromise: Promise<void> = new Promise((resolve, _reject) => {
-                console.log(`\nHit endpoint ${chalk.cyan.bold(endpoint)}.`);
+                const nextPromise: Promise<void> = new Promise((resolve, _reject) => {
+                    console.log(`\nHit endpoint ${chalk.cyan.bold(endpoint)}.`);
 
-                app.get(endpoint, resolve);
-            });
+                    let hasRun = false;
 
-            return nextPromise;
-        }, Promise.resolve());
+                    app.get(endpoint, (req, res, next) => {
+                        if (!hasRun) {
+                            hasRun = true;
+
+                            getFromMockEndpoint(req, res, next, testCase);
+                            
+                            resolve(); // proceed to next promise in the chain
+                        } else {
+                            next();
+                        }
+                    });
+                });
+
+                return nextPromise;
+            }, Promise.resolve());
+
+            console.log('All tests completed.');
+
+            process.exit(0);
+        })();
+    } else {
+        app.get('*', getFromMockEndpoint);
     }
-
-    app.get('*', getFromMockEndpoint);
 
     app.listen(port, () => {
         console.log(`App running at ${chalk.cyan.bold.underline(`http://localhost:${port}`)}.`);

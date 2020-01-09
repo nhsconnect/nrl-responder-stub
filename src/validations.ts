@@ -1,5 +1,3 @@
-const { suppressedValidations = [] }: { suppressedValidations: boolean | string[] } = require("./config");
-
 class Validation implements IValidation {
     constructor(
         public validationId: string,
@@ -13,13 +11,6 @@ class Validation implements IValidation {
     public details?: string;
 
     public setOutcome(success: boolean, details?: string) {
-        if (
-            suppressedValidations === true
-            || (suppressedValidations && suppressedValidations.includes(this.validationId))
-        ) {
-            return this;
-        }
-
         this.hasRun = true;
         this.success = success;
         this.details = details;
@@ -38,7 +29,6 @@ export default class Validations implements IValidations {
     constructor(
         public req: IRequest,
         public res: IResponse,
-        public meta: { suppressedValidations: boolean | string[]; }
     ) { }
 
     private _validationList: IValidation[] = [];
@@ -81,7 +71,7 @@ export default class Validations implements IValidations {
             description,
             hasRun,
             success,
-            details
+            details,
         }));
     }
 }
