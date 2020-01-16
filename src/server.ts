@@ -1,3 +1,19 @@
+/**
+ * Handles all app routing
+ *
+ * This works slightly differently in `guided` vs. `exploratory mode:
+ *
+ * In `guided` mode, endpoints are registered dynamically, using a promise
+ * chain wherein each promise resolves after the endpoint in question is hit,
+ * triggering the next endpoint to be registered. Upon hitting each endpoint,
+ * requests are passed to the logic in './get-from-mock-endpoint', running only
+ * the relevant validations as configured in the test plan. The endpoints and
+ * config in question can be found in `./guided-test-plan`.
+ * 
+ * In `exploratory` mode, all requests are simply passed on to the logic in
+ * './get-from-mock-endpoint', running all validations in sequence.
+ */
+
 import express, { Errback } from 'express';
 import chalk from 'chalk';
 import fs from 'fs';
@@ -11,11 +27,16 @@ import guidedTestPlan from './guided-test-plan';
 import { logs, reportsDir, reportPath } from './logs';
 import { normaliseRootEndpoint } from './utils';
 
+import https from 'https';
+
 const {
     port,
     logBodyMaxLength,
     reportOutputs,
     mode,
+    secureMode,
+    sslServerCert,
+    sslServerKey,
 } = config;
 
 const app = express();
@@ -25,25 +46,25 @@ const truncate = (str: string, maxLen: number) => {
 };
 
 const start = () => {
-    // populate `res.body` on `sendFile`, for logging purposes
+    app.use(function (_request, response: IResponse, next) {
+        // populate `response.body` on `sendFile`, for logging purposes
+        // this allows output reports to include snippets of the response body
 
-    app.use(function (_req, res: IResponse, next) {
+        const sendFile = response.sendFile;
 
-        const sendFile = res.sendFile;
-
-        res.sendFile = function (this: any, path: string, fn?: Errback | undefined) {
+        response.sendFile = function (this: any, path: string, fn?: Errback | undefined) {
 
             const body = fs.readFileSync(path, 'utf8');
 
             switch (logBodyMaxLength) {
                 case -1:
-                    res.body = body;
+                    response.body = body;
                     break;
                 case 0:
-                    // noop - body not added to log
+                    // no-op - body not added to log
                     break;
                 default:
-                    res.body = truncate(body, logBodyMaxLength);
+                    response.body = truncate(body, logBodyMaxLength);
                     break;
             }
 
@@ -54,13 +75,13 @@ const start = () => {
     });
 
     // prevent unnecessary console errors if viewed in browser
-    app.get('/favicon.ico', (_req, res) => res.sendStatus(httpStatus.NoContent));
+    app.get('/favicon.ico', (_request, response) => response.sendStatus(httpStatus.NoContent));
 
-    app.get('/', (_req, res) => {
-        // generated from src/README.md during build
-        return res.sendFile(path.join(__dirname, 'README.html'));
+    app.get('/', (_request, response) => {
+        // serve user docs at app root
+        // this is generated from src/README.md during build
+        return response.sendFile(path.join(__dirname, 'README.html'));
     });
-
 
     if (mode === 'guided') {
         (async () => {
@@ -74,12 +95,12 @@ const start = () => {
 
                     let hasRun = false;
 
-                    app.get(endpoint, (req, res, next) => {
+                    app.get(endpoint, (request, response, next) => {
                         if (!hasRun) {
                             hasRun = true;
 
-                            getFromMockEndpoint(req, res, next, testCase);
-                            
+                            getFromMockEndpoint(request, response, next, testCase);
+
                             resolve(); // proceed to next promise in the chain
                         } else {
                             next();
@@ -88,31 +109,45 @@ const start = () => {
                 });
 
                 return nextPromise;
-            }, Promise.resolve());
+            }, Promise.resolve()); // initial value for `reduce` is a resolved promise, initiating the promise chain
 
             console.log('All tests completed.');
 
-            process.exit(0);
+            process.exit();
         })();
     } else {
-        app.get('*', getFromMockEndpoint);
+        // callback must be provided like this - Express silently ignores callbacks with cardinality > 3
+        app.get('*', (...args) => getFromMockEndpoint(...args));
     }
 
-    app.listen(port, () => {
-        console.log(`App running at ${chalk.cyan.bold.underline(`http://localhost:${port}`)}.`);
+    const server = secureMode
+        ? https.createServer({
+            key: fs.readFileSync(sslServerKey as string),
+            cert: fs.readFileSync(sslServerCert as string),
+            requestCert: true,
+            rejectUnauthorized: false,
+            ca: [fs.readFileSync(process.env.NODE_EXTRA_CA_CERTS as string)],
+        }, app)
+        : app;
 
-        console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server.`);
+    server
+        .listen(port, () => {
+            console.log(`App running in ${secureMode ? chalk.green.bold('secure') : chalk.red.bold('insecure')} mode.`)
 
-        if (reportOutputs.reportsDir) {
-            if (!fs.existsSync(reportsDir)) {
-                fs.mkdirSync(reportsDir, { recursive: true });
+            console.log(`Docs at ${chalk.cyan.bold.underline(`${secureMode ? 'https' : 'http'}://localhost:${port}`)}.`);
+
+            console.log(`Press ${chalk.cyan.bold('Ctrl + C')} to stop server.`);
+
+            if (reportOutputs.reportsDir) {
+                if (!fs.existsSync(reportsDir)) {
+                    fs.mkdirSync(reportsDir, { recursive: true });
+                }
+
+                fs.writeFileSync(reportPath, JSON.stringify({ logs }), 'utf-8'); // empty logs array
+
+                console.log(`Logs from this session will be available at ${chalk.cyan.bold(reportPath)}.`);
             }
-
-            fs.writeFileSync(reportPath, JSON.stringify({ logs }), 'utf-8'); // empty logs arr
-
-            console.log(`Logs from this session will be available at ${chalk.cyan.bold(reportPath)}.`);
-        }
-    });
+        });
 };
 
 export default {

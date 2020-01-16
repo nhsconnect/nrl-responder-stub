@@ -1,5 +1,12 @@
+/**
+ * Runs validations on required headers/header formats
+ * 
+ * Parsing and validation of the JWT in the `Authorization` header is delegated to
+ * `./validate-jwt`.
+ */
+
 import validateJwt from './validate-jwt';
-import { uuidMatcher, asidMatcher } from './pattern-matchers';
+import { isUuid, isAsid } from './pattern-matchers';
 import { globalId } from './ids';
 
 const VALIDATION_IDS = {
@@ -7,7 +14,7 @@ const VALIDATION_IDS = {
     interactionID: `${globalId()}`,
     traceId: `${globalId()}`,
     asidHeaders: `${globalId()}`,
-    authHeader: `${globalId()}`
+    authHeader: `${globalId()}`,
 };
 
 export default (validations: IValidations) => {
@@ -28,9 +35,9 @@ export default (validations: IValidations) => {
     validations.add(VALIDATION_IDS.asidHeaders, `Headers [ ${asidHeaders.join(', ')} ] must be ASIDs consisting of 12 digits`);
     validations.add(VALIDATION_IDS.authHeader, 'The Authorization header must start with "Bearer "');
 
-    const { req } = validations;
+    const { request } = validations;
 
-    const { headers } = req;
+    const { headers } = request;
 
     const missingHeaders = requiredHeaders.filter(h => !headers[h.toLowerCase()]);
 
@@ -50,7 +57,7 @@ export default (validations: IValidations) => {
 
     validations.find(VALIDATION_IDS.traceId)
         .setFailureState(
-            !uuidMatcher.test(typeof headers['ssp-traceid'] === 'string' ? headers['ssp-traceid']  : '')
+            !isUuid(typeof headers['ssp-traceid'] === 'string' ? headers['ssp-traceid']  : '')
             &&
             `The Ssp-TraceID header has the value ${JSON.stringify(headers['ssp-traceid'])}`
         );
@@ -58,7 +65,7 @@ export default (validations: IValidations) => {
     const incorrectAsidHeaders = asidHeaders.filter(h => {
         const header = headers[h.toLowerCase()];
 
-        return !asidMatcher.test(typeof header === 'string' ? header : '');
+        return !isAsid(typeof header === 'string' ? header : '');
     });
 
     validations.find(VALIDATION_IDS.asidHeaders)

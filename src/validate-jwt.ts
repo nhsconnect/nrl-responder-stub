@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { requestingSystemMatcher, requestingOrganizationMatcher } from './pattern-matchers';
+import { isRequestingSystem, isRequestingOrganization } from './pattern-matchers';
 import { globalId } from './ids';
 
 const TOLERANCE_SECONDS = 30;
@@ -11,7 +11,6 @@ const VALIDATION_IDS = {
     expiryOver5Mins: `${globalId()}`,
     issuedAfterExpiry: `${globalId()}`,
     subNotRequestingUser: `${globalId()}`,
-    // subNotRequestingSystem: `${globalId()}`,
     reasonForRequest: `${globalId()}`,
     scope: `${globalId()}`,
     requestingSystemFormat: `${globalId()}`,
@@ -27,7 +26,6 @@ export default (validations: IValidations, token: string) => {
     validations.add(VALIDATION_IDS.expiryOver5Mins, 'The JWT exp (expiration time) claim cannot be more than 5 minutes in the future');
     validations.add(VALIDATION_IDS.issuedAfterExpiry, 'The JWT iat (issued at) time cannot be after the exp (expiration time) time');
     validations.add(VALIDATION_IDS.subNotRequestingUser, 'The JWT sub (subject) claim must be the same as the requesting_user');
-    // validations.add(VALIDATION_IDS.subNotRequestingSystem, 'If requesting_user is absent, the JWT sub (subject) claim must be the same as the requesting_system');
     validations.add(VALIDATION_IDS.reasonForRequest, 'The JWT reason_for_request claim must be set to "directcare"');
     validations.add(VALIDATION_IDS.scope, 'The JWT scope claim must be set to "patient/*.read"');
     validations.add(VALIDATION_IDS.requestingSystemFormat, 'The JWT requesting_system claim must be in the format https://fhir.nhs.uk/Id/accredited-system|[ASID]');
@@ -93,13 +91,6 @@ export default (validations: IValidations, token: string) => {
                     'The sub (subject) claim is different from requesting_user'
                 );
 
-            // validations.find(VALIDATION_IDS.subNotRequestingSystem)
-            //     .setFailureState(
-            //         !requesting_user && (sub !== requesting_system)
-            //         &&
-            //         'JWT requesting_user is absent and sub (subject) claim is different from requesting_system'
-            //     );
-
             validations.find(VALIDATION_IDS.reasonForRequest)
                 .setFailureState(
                     reason_for_request !== 'directcare'
@@ -116,14 +107,14 @@ export default (validations: IValidations, token: string) => {
 
             validations.find(VALIDATION_IDS.requestingSystemFormat)
                 .setFailureState(
-                    !requestingSystemMatcher.test(requesting_system)
+                    !isRequestingSystem(requesting_system)
                     &&
                     'The JWT requesting_system claim is not in the format https://fhir.nhs.uk/Id/accredited-system|[ASID]'
                 );
 
             validations.find(VALIDATION_IDS.requestingOrganizationFormat)
                 .setFailureState(
-                    !requestingOrganizationMatcher.test(requesting_organization)
+                    !isRequestingOrganization(requesting_organization)
                     &&
                     'The JWT requesting_organization claim is not in the format https://fhir.nhs.uk/Id/ods-organization-code|[ODSCode]'
                 );

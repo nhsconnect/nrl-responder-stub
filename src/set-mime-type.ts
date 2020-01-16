@@ -15,8 +15,8 @@ const FILE_FORMATS: IStringMap<IFileFormat> = {
     }
 };
 
-export default (req: IRequest, res: IResponse) => {
-    const extension = req.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
+export default (request: IRequest, response: IResponse) => {
+    const extension = request.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
 
     const fileFormat = extension && FILE_FORMATS[extension];
 
@@ -27,6 +27,6 @@ export default (req: IRequest, res: IResponse) => {
             contentType += ';charset=utf-8';
         }
 
-        res.type(contentType);
+        response.type(contentType);
     }
 };

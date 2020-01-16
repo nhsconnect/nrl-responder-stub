@@ -1,13 +1,13 @@
 const userConfig: IConfigOverrides = {
-    mode: 'guided',
+    // mode: 'guided',
     // endpointFormat: 'integration',
     // useFhirMimeTypes: true,
     // explicitlySetUtf8: true,
     // port: 5000,
 
     // reportOutputs: {
-    //     reportsDir: true,
-    //     stdout: true,
+    //     // reportsDir: true,
+    //     // stdout: true,
     // },
 
     // logBodyMaxLength: 1000,
@@ -18,6 +18,11 @@ const userConfig: IConfigOverrides = {
     //     'api/patients/1/records/sample.html': 'sample.html',
     //     'api/patients/1/records/sample.pdf': 'sample.pdf',
     // },
+
+    sslCACert: 'C:\\certs\\server_cert.pem',
+    sslServerCert: 'C:\\certs\\server_cert.pem',
+    sslServerKey: 'C:\\certs\\server_key.pem',
+    // secureMode: false,
 };
 
 export default userConfig;

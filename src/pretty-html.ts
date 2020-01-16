@@ -1,17 +1,29 @@
-export {}
+/**
+ * Converts reports from JSON => pretty-printed HTML
+ * 
+ * HTML is generated using handlebars, based on the
+ * `static/report-template.html` template.
+ * 
+ * If -f or --input-file argument passed, selects file from `reports` dir based
+ * on that filename.
+ * 
+ * Else, selects the most recent JSON report (based on ISO-formatted dates in
+ * filenames).
+ */
 
-const handlebars = require('handlebars');
-const fs = require('fs');
-const path = require('path');
+import handlebars from 'handlebars';
+import fs from 'fs';
+import path from 'path';
 
 const dirName = path.join(__dirname, 'reports');
 
 const flagIdx = process.argv
     .findIndex(arg => ['-f', '--input-file'].includes(arg)) + 1;
+    // index is -1 if not found; adding 1 yields 0 if not found, else the next arg
 
-const arg = flagIdx && process.argv[flagIdx];
+const arg = flagIdx && process.argv[flagIdx]; // short-circuits if 0
 
-const fileName: string | undefined = arg || fs.readdirSync(dirName)
+const fileName: string | undefined = arg || fs.readdirSync(dirName) // 0 is falsy
     .filter((fileName: string) => fileName.endsWith('.json'))
     .sort()
     .pop();
@@ -45,8 +57,8 @@ interface ISerializableValidation {
 }
 
 interface ILog {
-    req: { headers: object };
-    res: { headers: object };
+    request: { headers: object };
+    response: { headers: object };
     validations: ISerializableValidation[];
 }
 
@@ -55,6 +67,7 @@ const splitNumbers = (str: string) => str.split(/(\d+(?:\.\d+)?)/).map((el, idx)
 });
 
 const sortValidations = (validationA: ISerializableValidation, validationB: ISerializableValidation) => {
+    // sort validations by name in lexicographical order (e.g. A9, A10, B1, B2...)
     const [idA, idB] = [validationA, validationB].map(validation => validation.validationId);
 
     const [splitIdA, splitIdB] = [idA, idB].map(splitNumbers);
@@ -71,11 +84,11 @@ const sortValidations = (validationA: ISerializableValidation, validationB: ISer
     return 0;
 };
 
-data.logs.forEach((log: ILog) => {
-    // TODO
+data.metaJson = JSON.stringify(data.meta, null, 4);
 
-    log.req.headers = formatHeaders(log.req.headers);
-    log.res.headers = formatHeaders(log.res.headers);
+data.logs.forEach((log: ILog) => {
+    log.request.headers = formatHeaders(log.request.headers);
+    log.response.headers = formatHeaders(log.response.headers);
 
     const [all, passed, failed, notRun] = [
         () => true,
@@ -91,9 +104,8 @@ fs.readFile(path.join(__dirname, 'static/report-template.html'), 'utf-8', (error
     const template = handlebars.compile(source);
     const html = template(data);
 
-    // TODO
     fs.writeFileSync(
         path.join(dirName, 'html', fileName.replace(/\.json$/, '.html')),
-        html
+        html,
     );
 });

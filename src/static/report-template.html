@@ -18,22 +18,30 @@
 <body>
   <div class="container">
     <h1>Consumer Record Retrieval Report</h1>
+
+    <p>Run in <strong>{{#if meta.config.secureMode}}<span class="success">secure</span>{{else}}<span class="danger">insecure</span>{{/if}}</strong> mode.</p>
+
+    <details>
+        <summary>Meta</summary>
+
+        <pre><code>{{metaJson}}</code></pre>
+    </details>
     
     <h2>Requests</h2>
     
     {{#each logs}}
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="requestHead-cc364868-07d2-4d5b-b6bd-b09201693d56">
-                <h3 class="panel-title"><code>{{req.method}} {{req.path}}</code></h3>
+                <h3 class="panel-title"><code>{{request.method}} {{request.path}}</code></h3>
             </div>
             <div id="requestData-cc364868-07d2-4d5b-b6bd-b09201693d56" class="panel-collapse collapse in" role="tabpanel"
                 aria-labelledby="requestHead-cc364868-07d2-4d5b-b6bd-b09201693d56">
                 <div class="panel-body">
                     <div class="col-md-12">&nbsp;</div>
                     <div class="col-md-3">Method</div>
-                    <div class="col-md-9">{{req.method}}</div>
+                    <div class="col-md-9">{{request.method}}</div>
                     <div class="col-md-3">Path</div>
-                    <div class="col-md-9">{{req.path}}</div>
+                    <div class="col-md-9">{{request.path}}</div>
                     <div class="col-md-12">&nbsp;</div>
                     <div class="col-md-3">Request Headers</div>
                     <div class="col-md-9">
@@ -45,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each req.headers}}
+                                {{#each request.headers}}
                                 <tr>
                                     <td>{{name}}</td>
                                     <td>{{value}}</td>
@@ -58,7 +66,7 @@
                     <div class="col-md-12">&nbsp;</div>
 
                     <div class="col-md-3">Status code</div>
-                    <div class="col-md-9">{{res.statusCode}}</div>
+                    <div class="col-md-9">{{response.statusCode}}</div>
                     
                     <div class="col-md-12">&nbsp;</div>
 
@@ -72,7 +80,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each res.headers}}
+                                {{#each response.headers}}
                                 <tr>
                                     <td>{{name}}</td>
                                     <td>{{value}}</td>
@@ -85,7 +93,7 @@
                     <div class="col-md-12">&nbsp;</div>
 
                     <div class="col-md-3">Response Body</div>
-                    <div class="response-body col-md-9" style="overflow: auto;max-height:100px;white-space:pre-wrap;">{{#if res.body}}{{res.body}}{{else}}&nbsp;{{/if}}</div>
+                    <div class="response-body col-md-9" style="overflow: auto;max-height:100px;white-space:pre-wrap;">{{#if response.body}}{{response.body}}{{else}}&nbsp;{{/if}}</div>
                     
                     <div class="col-md-12">&nbsp;</div>
 

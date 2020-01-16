@@ -17,6 +17,11 @@ const defaultConfig: IConfig = {
         'https://provider1.example.com/api/patients/1/records/sample.html': 'sample.html',
         'https://provider1.example.com/api/patients/1/records/sample.pdf': 'sample.pdf',
     },
+
+    sslCACert: null,
+    sslServerCert: null,
+    sslServerKey: null,
+    // secureMode: undefined, // will default to true if `sslCACert`, `sslServerCert`, and `sslServerKey` are provided, unless set explicitly
 };
 
 export default defaultConfig;

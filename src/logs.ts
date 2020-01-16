@@ -11,9 +11,7 @@ const logs: any[] = [];
 
 import guidedTestPlan from './guided-test-plan';
 
-const {
-    reportOutputs,
-} = config;
+const { reportOutputs } = config;
 
 const meta = { config };
 
@@ -33,17 +31,17 @@ const writeLog = (entry: ILogEntry) => {
     }
 };
 
-const buildLogEntry = (req: IRequest, res: IResponse, validations?: IValidations) => {
-    const { headers, httpVersion, method, path, body: requestBody } = req;
-    const { statusCode, body: responseBody } = res;
+const buildLogEntry = (request: IRequest, response: IResponse, validations?: IValidations) => {
+    const { headers, httpVersion, method, path, body: requestBody } = request;
+    const { statusCode, body: responseBody } = response;
 
     const entry: ILogEntry = {
-        req: { headers, httpVersion, method, path, body: requestBody },
-        res: { statusCode, headers: res.getHeaders(), body: responseBody },
+        request: { headers, httpVersion, method, path, body: requestBody },
+        response: { statusCode, headers: response.getHeaders(), body: responseBody },
         validations: validations?.listSerializable()
     };
 
-    if (method === 'GET') delete entry.req.body;
+    if (method === 'GET') delete entry.request.body;
 
     return entry;
 };

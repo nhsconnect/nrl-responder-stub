@@ -24,14 +24,14 @@ declare global {
                 validations: boolean | string[];
             };
         };
-        req: {
+        request: {
             headers: IncomingHttpHeaders;
             httpVersion: string;
             method: string;
             path: string;
             body: any;
         };
-        res: {
+        response: {
             statusCode: number;
             headers: OutgoingHttpHeaders;
             body: string | undefined;
@@ -59,6 +59,12 @@ declare global {
         pathFileMapping: {
             [path: string]: filename;
         };
+
+        sslCACert: string | null;
+        sslServerCert: string | null;
+        sslServerKey: string | null;
+
+        secureMode?: boolean;
     }
 
     interface IStringMap<T> {
@@ -70,8 +76,8 @@ declare global {
     type INextFunction = NextFunction;
 
     interface IValidations {
-        req: IRequest;
-        res: IResponse;
+        request: IRequest;
+        response: IResponse;
 
         add: (validationId: string, description: string) => IValidation;
         find: (validationId: string) => IValidation;
@@ -85,8 +91,8 @@ declare global {
         validationId: string;
         description: string;
 
-        req: IRequest;
-        res: IResponse;
+        request: IRequest;
+        response: IResponse;
 
         hasRun: boolean;
         success?: boolean;

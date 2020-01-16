@@ -2,8 +2,8 @@ class Validation implements IValidation {
     constructor(
         public validationId: string,
         public description: string,
-        public req: IRequest,
-        public res: IResponse
+        public request: IRequest,
+        public response: IResponse
     ) { }
 
     public hasRun: boolean = false;
@@ -27,8 +27,8 @@ class Validation implements IValidation {
 
 export default class Validations implements IValidations {
     constructor(
-        public req: IRequest,
-        public res: IResponse,
+        public request: IRequest,
+        public response: IResponse,
     ) { }
 
     private _validationList: IValidation[] = [];
@@ -38,7 +38,7 @@ export default class Validations implements IValidations {
             throw new Error(`Duplicate validationId: ${validationId}`);
         }
 
-        const validation = new Validation(validationId, description, this.req, this.res);
+        const validation = new Validation(validationId, description, this.request, this.response);
 
         this._validationList.push(validation);
 

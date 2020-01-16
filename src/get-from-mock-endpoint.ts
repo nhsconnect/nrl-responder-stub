@@ -1,3 +1,10 @@
+/**
+ * Handles all GET requests to any non-root path
+ * (or specified paths only in guided mode)
+ * 
+ * 
+ */
+
 import fs from 'fs';
 import path from 'path';
 
@@ -11,30 +18,75 @@ import httpStatus from './http-status';
 import config from './config';
 
 import { buildLogEntry, writeLog } from './logs';
+import { TLSSocket } from 'tls';
 
 const {
     pathFileMapping,
     endpointFormat,
+    secureMode,
 } = config;
 
 const VALIDATION_IDS = {
-    responseCode: `${globalId()}`
+    responseCode: `${globalId()}`,
 };
 
-const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction, testCase?: ITestCase) => {
-    const $path = req.url.slice(1);
+const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction, testCase?: ITestCase) => {
+    const validations = new Validations(request, response);
 
-    // console.log(testCase); // TODO
+    const fail = (response: IResponse, code: number, message: any) => {
+        validations
+            .find(VALIDATION_IDS.responseCode)
+            .setFailureState(`Request failed with status ${code}: ${JSON.stringify(message)}`);
+
+        response
+            .status(code)
+            .send(message);
+
+        return next();
+    }
+
+    if (secureMode) {
+        const certificate = (request.connection as TLSSocket).getPeerCertificate()
+        const isAuthorised: boolean = (request as any).client.authorized;
+
+        if (!isAuthorised) {
+            if (certificate.subject) {
+                return fail(
+                    response,
+                    httpStatus.Forbidden,
+                    {
+                        certificate: {
+                            subject: certificate.subject.CN || null,
+                            issuer: certificate.issuer.CN || null,
+                        },
+                        message: 'Unauthorized client certificate',
+                    }
+                );
+            } else {
+                return fail(
+                    response,
+                    httpStatus.Unauthorized,
+                    {
+                        certificate: null,
+                        message: 'No client certificate',
+                    }
+                );
+            }
+        }
+    }
+
+    // `path` var is already in use by node's `path` module
+    const $path = request.url.slice(1);
+
+    // console.log(testCase); // TODO - awaiting guided mode
 
     if (endpointFormat === 'local' && $path.includes('/')) {
-        res
+        response
             .status(httpStatus.BadRequest)
             .send('Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)');
         
         return next();
     }
-
-    const validations = new Validations(req, res);
 
     runValidations(validations);
 
@@ -42,25 +94,14 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
         .add(VALIDATION_IDS.responseCode, 'Request returns 2XX response code')
         .setFailureState(false); // initialize to success
 
-    const fail = (res: IResponse, code: number, message: any) => {
-        validations
-            .find(VALIDATION_IDS.responseCode)
-            .setFailureState(`Request failed with status ${code}: ${JSON.stringify(message)}`);
-
-        res
-            .status(code)
-            .send(message);
-
-        return next();
-    }
 
     // logging
-    res.on('finish', () => {
-        const logEntry = buildLogEntry(req, res, validations);
+    response.on('finish', () => {
+        const logEntry = buildLogEntry(request, response, validations);
         writeLog(logEntry);
     });
 
-    if (res.headersSent) {
+    if (response.headersSent) {
         return next();
     }
 
@@ -70,7 +111,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
         };
 
         return fail(
-            res,
+            response,
             httpStatus.BadRequest,
             data
         );
@@ -83,7 +124,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
             url = decodeURIComponent($path);
         } catch {
             return fail(
-                res,
+                response,
                 httpStatus.BadRequest,
                 `${$path} cannot be percent-decoded`
             );
@@ -93,7 +134,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
             new URL(url);
         } catch {
             return fail(
-                res,
+                response,
                 httpStatus.BadRequest,
                 `${url} is not a valid URL`
             );
@@ -106,7 +147,7 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
 
     if (!fileName) {
         return fail(
-            res,
+            response,
             httpStatus.NotFound,
             `A filename corresponding to path ${urlOrPath} must exist in pathFileMapping in configuration`
         );
@@ -117,15 +158,15 @@ const getFromMockEndpoint = (req: IRequest, res: IResponse, next: INextFunction,
 
     if (!fs.existsSync(filePath)) {
         return fail(
-            res,
+            response,
             httpStatus.NotFound,
             `fileName ${fileName} must exist as a file in the responses folder`
         );
     }
 
-    setMimeType(req, res);
+    setMimeType(request, response);
 
-    return res.sendFile(filePath, next); // `next` fn must be in callback - see https://stackoverflow.com/a/33767854
+    return response.sendFile(filePath, next); // `next` fn must be in callback - see https://stackoverflow.com/a/33767854
 };
 
 export default getFromMockEndpoint;
