@@ -33,6 +33,10 @@ const VALIDATION_IDS = {
 const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction, testCase?: ITestCase) => {
     const validations = new Validations(request, response);
 
+    validations
+        .add(VALIDATION_IDS.responseCode, 'Request returns 2XX response code')
+        .setFailureState(false); // initialize to success
+
     const fail = (response: IResponse, code: number, message: any) => {
         validations
             .find(VALIDATION_IDS.responseCode)
@@ -89,11 +93,6 @@ const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INext
     }
 
     runValidations(validations);
-
-    validations
-        .add(VALIDATION_IDS.responseCode, 'Request returns 2XX response code')
-        .setFailureState(false); // initialize to success
-
 
     // logging
     response.on('finish', () => {

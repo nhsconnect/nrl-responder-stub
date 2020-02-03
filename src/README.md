@@ -2,23 +2,25 @@
 
 ## Overview
 
-The test app can be run in "guided mode" or "exploratory mode".
+The Consumer Record Retrieval Testing App is intended for Consumers to carry out conformance testing of their record retrieval capabilities, during local and INT stages of testing.
 
-In guided mode, instructions are provided in the CLI prompt regarding which endpoints to hit. Reports are generated once all endpoints have been hit (indicated when "Finished" is displayed in the terminal). <!-- TODO -->
+It is a <abbr title="command-line interface">CLI</abbr>-based application that provides a web API, the endpoints and data for which are configurable.
 
-In exploratory mode, the test app runs continually and generates reports for any/all calls made.
+<!-- The test app can be run in "guided mode" or "exploratory mode".
 
+In guided mode, instructions are provided in the CLI prompt regarding which endpoints to hit. Reports are generated once all endpoints have been hit (indicated when "Finished" is displayed in the terminal).
+
+In exploratory mode, the test app runs continually and generates reports for any/all calls made. -->
 
 ## Prerequisites
 
-*   NodeJS (v10 <!-- TODO --> or higher).
+*   NodeJS (v10 or higher).
 
-    You can check if you already have NodeJS installed by running `node -v`.
+    You can check your NodeJS installation by running `node -v`.
 
     If you do not have NodeJS or your NodeJS version is too low, you can download it from [the NodeJS downloads page](https://nodejs.org/en/download/).
     
-    <!-- The required dependencies for running the test will be installed as part of the test execution. If the dependencies are already installed, this step will be skipped. -->
-
+The required dependencies for running the test will be installed as part of the test execution. If the dependencies are already installed, this step will be skipped.
 
 ## Setup
 
@@ -30,21 +32,20 @@ In exploratory mode, the test app runs continually and generates reports for any
     cd <path to test app>
     ```
 
-3.  Install dependencies: <!-- TODO - auto-install at runtime _iff_ not already installed - see prrta -->
-
-    ```
-    npm i
-    ```
-
-
 ## Running tests
 
 While the test app is running, tests can be run against each of the records specified in the configuration.
 
 1.  Start the test app
 
+    Windows (cmd):
     ```
-    npm run s
+    start.bat
+    ```
+
+    Linux (bash):
+    ```
+    ./start.sh
     ```
 
 2.  Send a `GET` request to the relevant endpoint from the system-under-test.
@@ -84,7 +85,6 @@ Various configuration options are available in `config.user.ts`:
 
 Property                   | Type                         | Details
 ------------------         | ---------------------------  | ------------------------------
-`mode`                     | `"guided" \| "exploratory"`  | In guided mode, instructions are provided in the CLI prompt regarding which endpoints to hit. Reports are generated once all endpoints have been hit (indicated when "Finished" is displayed in the terminal).<br><br>In exploratory mode, the test app runs continually and generates reports for any/all calls made.
 `endpointFormat`           |  `"local" \| "integration"`  | If `endpointFormat` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property.
 `useFhirMimeTypes`         | `boolean`                    | If `true` (default), MIME types of JSON and XML responses will be set to `application/fhir+json` and `application/fhir+xml` respectively.
 `explicitlySetUtf8`        | `boolean`                    | Append `;charset=utf-8` to MIME types.
@@ -93,3 +93,7 @@ Property                   | Type                         | Details
 `reportOutputs.reportsDir` | `boolean`                    | Save reports as JSON files in `/reports` directory.
 `logBodyMaxLength`         | `number`                     | Maximum chars of response body to log, after which the body will be truncated.<br>• `-1` logs the entire response body.<br>• `0` logs no response body.
 `pathFileMapping`          | `{ [path: string]: string }` | To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property.<br><br>If `endpointFormat` is `local`, the key of each mapping must be a valid URL, but it doesn&rsquo;t have to point to anything.
+
+<!-- `mode`                     | `"guided" \| "exploratory"`  | In guided mode, instructions are provided in the CLI prompt regarding which endpoints to hit. Reports are generated once all endpoints have been hit (indicated when "Finished" is displayed in the terminal).<br><br>In exploratory mode, the test app runs continually and generates reports for any/all calls made.
+ -->
+ 

@@ -132,6 +132,13 @@ const start = () => {
 
     server
         .listen(port, () => {
+            const nodeVersion = process.versions.node;
+            const major = parseInt(nodeVersion.split('.')[0], 10);
+
+            if (major < 10) {
+                console.log(chalk.red(`WARNING! Current Node.js version is ${nodeVersion}. Version 10.x.x or higher required.`));
+            }
+
             console.log(`App running in ${secureMode ? chalk.green.bold('secure') : chalk.red.bold('insecure')} mode.`)
 
             console.log(`Docs at ${chalk.cyan.bold.underline(`${secureMode ? 'https' : 'http'}://localhost:${port}`)}.`);
