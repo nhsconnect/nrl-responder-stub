@@ -79,8 +79,8 @@ const start = () => {
 
     app.get('/', (_request, response) => {
         // serve user docs at app root
-        // this is generated from src/README.md during build
-        return response.sendFile(path.join(__dirname, 'README.html'));
+        // this is generated from src/docs.md during build
+        return response.sendFile(path.join(__dirname, 'docs.html'));
     });
 
     if (mode === 'guided') {

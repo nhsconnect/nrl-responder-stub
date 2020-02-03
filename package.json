@@ -4,7 +4,7 @@
     "description": "NHS Digital NRL Consumer Record Retrieval Test App",
     "main": "main.js",
     "scripts": {
-        "copy-files": "cp -r \"src/responses\" \"src/static\" \"src/README.md\" \"src/README.html\" \"dist/src\" && cp dist-static/* package.json package-lock.json dist",
+        "copy-files": "cp -r \"src/responses\" \"src/static\" \"src/docs.md\" \"src/docs.html\" \"dist/src\" && cp dist-static/* package.json package-lock.json dist",
         "build": "rm -rf dist && mkdir dist && mkdir \"dist/src\" && ts-node make-doc && npm run copy-files && tsc --p tsconfig.prod.json",
         "build-dev": "ts-node make-doc",
         "dev": "npm run build-dev && start-dev",
@@ -22,10 +22,10 @@
         "@types/marked": "^0.7.2",
         "@types/node": "^12.12.24",
         "marked": "^0.7.0",
+        "newman": "^4.5.7",
         "ts-loader": "^6.2.1",
-        "ts-node": "^8.4.1",
-        "typescript": "^3.7.3",
-        "newman": "^4.5.7"
+        "ts-node": "^8.6.2",
+        "typescript": "^3.7.3"
     },
     "dependencies": {
         "chalk": "^2.4.2",
