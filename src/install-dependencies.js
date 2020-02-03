@@ -24,6 +24,10 @@ const progressMessage = {
     messages: [],
 
     start: function (key, text, std) {
+        if (!std.clearLine) { // prevent errors in git-bash on Windows
+            return console.log(`${text}...`);
+        }
+
         const PROGRESS_BAR_LENGTH = 20;
 
         const msg = {
@@ -50,6 +54,10 @@ const progressMessage = {
     },
 
     stop: function (key, std) {
+        if (!std.clearLine) { // prevent errors in git-bash on Windows
+            return;
+        }
+
         const { interval } = this.messages[key];
         
         clearInterval(interval);
