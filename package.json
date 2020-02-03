@@ -1,18 +1,17 @@
 {
     "name": "consumer-record-retrieval-test-app",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "description": "NHS Digital NRL Consumer Record Retrieval Test App",
     "main": "main.js",
     "scripts": {
-        "cpf": "cp -r \"src/responses\" \"src/static\" \"src/README.md\" \"src/README.html\" \"dist/src\" && cp dist-static/* package.json package-lock.json dist",
-        "build": "rm -rf dist && mkdir dist && mkdir \"dist/src\" && ts-node make-doc && npm run cpf && tsc --p tsconfig.prod.json",
+        "copy-files": "cp -r \"src/responses\" \"src/static\" \"src/README.md\" \"src/README.html\" \"dist/src\" && cp dist-static/* package.json package-lock.json dist",
+        "build": "rm -rf dist && mkdir dist && mkdir \"dist/src\" && ts-node make-doc && npm run copy-files && tsc --p tsconfig.prod.json",
         "build-dev": "ts-node make-doc",
-        "dev": "npm run build-dev && npm run start-dev",
+        "dev": "npm run build-dev && start-dev",
         "newman": "newman run CRRTA.postman_collection.json -k -e CRRTA_Local.postman_environment.json --ssl-client-cert \"C:\\certs\\alice_cert.pem\" --ssl-client-key \"C:\\certs\\alice_key.pem\""
     },
     "directories": {
-        "lib": "lib",
-        "reports": "reports",
+        "lib": "src",
         "node_modules": "node_modules"
     },
     "author": "lionel.rowe1@nhs.net",
@@ -25,13 +24,13 @@
         "marked": "^0.7.0",
         "ts-loader": "^6.2.1",
         "ts-node": "^8.4.1",
-        "typescript": "^3.7.3"
+        "typescript": "^3.7.3",
+        "newman": "^4.5.7"
     },
     "dependencies": {
         "chalk": "^2.4.2",
         "express": "^4.17.1",
         "handlebars": "^4.5.3",
-        "jsonwebtoken": "^8.5.1",
-        "newman": "^4.5.7"
+        "jsonwebtoken": "^8.5.1"
     }
 }
