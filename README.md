@@ -25,4 +25,4 @@ _While app is running in another terminal instance:_
 
 ---
 
-For user documentation, see [docs](./src/docs.md).
+For user documentation, see [docs](./lib/docs.md).

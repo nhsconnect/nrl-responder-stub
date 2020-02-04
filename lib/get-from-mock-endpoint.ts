@@ -1,6 +1,5 @@
 /**
  * Handles all GET requests to any non-root path
- * (or specified paths only in guided mode)
  * 
  * 
  */
@@ -30,7 +29,7 @@ const VALIDATION_IDS = {
     responseCode: `${globalId()}`,
 };
 
-const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction, testCase?: ITestCase) => {
+const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction) => {
     const validations = new Validations(request, response);
 
     validations
@@ -81,8 +80,6 @@ const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INext
 
     // `path` var is already in use by node's `path` module
     const $path = request.url.slice(1);
-
-    // console.log(testCase); // TODO - awaiting guided mode
 
     if (endpointFormat === 'local' && $path.includes('/')) {
         response
@@ -153,7 +150,7 @@ const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INext
 
     }
 
-    const filePath = path.join(__dirname, 'responses', fileName);
+    const filePath = path.join(__dirname, '..', 'responses', fileName);
 
     if (!fs.existsSync(filePath)) {
         return fail(

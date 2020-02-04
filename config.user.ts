@@ -1,5 +1,4 @@
 const userConfig: IConfigOverrides = {
-    // mode: 'guided',
     // endpointFormat: 'integration',
     // useFhirMimeTypes: true,
     // explicitlySetUtf8: true,
@@ -19,9 +18,9 @@ const userConfig: IConfigOverrides = {
     //     'api/patients/1/records/sample.pdf': 'sample.pdf',
     // },
 
-    sslCACert: 'C:/certs/server_cert.pem',
-    sslServerCert: 'C:/certs/server_cert.pem',
-    sslServerKey: 'C:/certs/server_key.pem',
+    // sslCACert: 'C:/certs/server_cert.pem',
+    // sslServerCert: 'C:/certs/server_cert.pem',
+    // sslServerKey: 'C:/certs/server_key.pem',
     // secureMode: false,
 };
 

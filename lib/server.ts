@@ -1,16 +1,7 @@
 /**
  * Handles all app routing
- *
- * This works slightly differently in `guided` vs. `exploratory mode:
- *
- * In `guided` mode, endpoints are registered dynamically, using a promise
- * chain wherein each promise resolves after the endpoint in question is hit,
- * triggering the next endpoint to be registered. Upon hitting each endpoint,
- * requests are passed to the logic in './get-from-mock-endpoint', running only
- * the relevant validations as configured in the test plan. The endpoints and
- * config in question can be found in `./guided-test-plan`.
  * 
- * In `exploratory` mode, all requests are simply passed on to the logic in
+ * All requests are simply passed on to the logic in
  * './get-from-mock-endpoint', running all validations in sequence.
  */
 
@@ -22,10 +13,7 @@ import httpStatus from './http-status';
 import config from './config';
 import getFromMockEndpoint from './get-from-mock-endpoint';
 
-import guidedTestPlan from './guided-test-plan';
-
 import { logs, reportsDir, reportPath } from './logs';
-import { normaliseRootEndpoint } from './utils';
 
 import https from 'https';
 
@@ -33,7 +21,6 @@ const {
     port,
     logBodyMaxLength,
     reportOutputs,
-    mode,
     secureMode,
     sslServerCert,
     sslServerKey,
@@ -79,46 +66,12 @@ const start = () => {
 
     app.get('/', (_request, response) => {
         // serve user docs at app root
-        // this is generated from src/docs.md during build
+        // this is generated from lib/docs.md during build
         return response.sendFile(path.join(__dirname, 'docs.html'));
     });
 
-    if (mode === 'guided') {
-        (async () => {
-            await guidedTestPlan.reduce(async (promiseChain, testCase) => {
-                await promiseChain;
-
-                const endpoint = normaliseRootEndpoint(testCase.endpoint).withSlash;
-
-                const nextPromise: Promise<void> = new Promise((resolve, _reject) => {
-                    console.log(`\nHit endpoint ${chalk.cyan.bold(endpoint)}.`);
-
-                    let hasRun = false;
-
-                    app.get(endpoint, (request, response, next) => {
-                        if (!hasRun) {
-                            hasRun = true;
-
-                            getFromMockEndpoint(request, response, next, testCase);
-
-                            resolve(); // proceed to next promise in the chain
-                        } else {
-                            next();
-                        }
-                    });
-                });
-
-                return nextPromise;
-            }, Promise.resolve()); // initial value for `reduce` is a resolved promise, initiating the promise chain
-
-            console.log('All tests completed.');
-
-            process.exit();
-        })();
-    } else {
-        // callback must be provided like this - Express silently ignores callbacks with cardinality > 3
-        app.get('*', (...args) => getFromMockEndpoint(...args));
-    }
+    // callback must be provided like this - Express silently ignores callbacks with cardinality > 3
+    app.get('*', (...args) => getFromMockEndpoint(...args));
 
     const server = secureMode
         ? https.createServer({

@@ -2,13 +2,13 @@
 
 export NODE_ENV=development
 
-node "./src/install-dependencies"
+node "./lib/install-dependencies"
 
-CAVAR=$(ts-node "./get-ca-file")
+CAVAR=$(ts-node "./lib/get-ca-file")
 if [ "$CAVAR" != "null" ]
 then
     export NODE_EXTRA_CA_CERTS=$CAVAR
 fi
 
 ts-node "./make-doc"
-ts-node "./src/main"
+ts-node "./lib/main"

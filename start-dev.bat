@@ -14,11 +14,11 @@ IF "%~1"=="-FIXED_CTRL_C" (
 
 SET NODE_ENV=development
 
-CALL node ".\src\install-dependencies"
+CALL node ".\lib\install-dependencies"
 
-FOR /F "tokens=* USEBACKQ" %%F IN (`ts-node ".\get-ca-file"`) DO (
+FOR /F "tokens=* USEBACKQ" %%F IN (`ts-node ".\lib\get-ca-file"`) DO (
     IF NOT "%%F" == "null" SET NODE_EXTRA_CA_CERTS=%%F
 )
 
 CALL ts-node ".\make-doc"
-CALL ts-node ".\src\main"
+CALL ts-node ".\lib\main"

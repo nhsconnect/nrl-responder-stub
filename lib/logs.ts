@@ -4,20 +4,14 @@ import path from 'path';
 import config from './config';
 
 const reportFileName = `${new Date().toISOString().slice(0, -5).replace(/\D/g, '-')}.json`;
-const reportsDir = path.join(__dirname, 'reports');
+const reportsDir = path.join(__dirname, '..', 'reports');
 const reportPath = path.join(reportsDir, reportFileName);
 
 const logs: any[] = [];
 
-import guidedTestPlan from './guided-test-plan';
-
 const { reportOutputs } = config;
 
 const meta = { config };
-
-if (config.mode === 'guided') {
-    (meta as any).guidedTestPlan = guidedTestPlan;
-}
 
 const writeLog = (entry: ILogEntry) => {
     logs.push(entry);

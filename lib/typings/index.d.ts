@@ -40,8 +40,6 @@ declare global {
     }
 
     interface IConfig {
-        mode: 'guided' | 'exploratory';
-
         endpointFormat: 'local' | 'integration';
 
         useFhirMimeTypes?: boolean;

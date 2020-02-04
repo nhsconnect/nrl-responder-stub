@@ -15,7 +15,13 @@ import handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
 
-const dirName = path.join(__dirname, 'reports');
+const baseDirName = path.join(__dirname, 'reports');
+
+const htmlDirName = path.join(baseDirName, 'html');
+
+if (!fs.existsSync(htmlDirName)) {
+    fs.mkdirSync(htmlDirName, { recursive: true });
+}
 
 const flagIdx = process.argv
     .findIndex(arg => ['-f', '--input-file'].includes(arg)) + 1;
@@ -23,7 +29,7 @@ const flagIdx = process.argv
 
 const arg = flagIdx && process.argv[flagIdx]; // short-circuits if 0
 
-const fileName: string | undefined = arg || fs.readdirSync(dirName) // 0 is falsy
+const fileName: string | undefined = arg || fs.readdirSync(baseDirName) // 0 is falsy
     .filter((fileName: string) => fileName.endsWith('.json'))
     .sort()
     .pop();
@@ -33,7 +39,7 @@ if (!fileName) {
 }
 
 const data: any = JSON.parse(
-    fs.readFileSync(path.join(dirName, fileName), 'utf8')
+    fs.readFileSync(path.join(baseDirName, fileName), 'utf8')
 );
 
 const formatHeaders = (headers: object) => {
@@ -100,12 +106,12 @@ data.logs.forEach((log: ILog) => {
     (log as any).validations = { all, passed, failed, notRun };
 });
 
-fs.readFile(path.join(__dirname, 'static/report-template.html'), 'utf-8', (error: any, source: any) => {
+fs.readFile(path.join(__dirname, 'lib', 'static/report-template.html'), 'utf-8', (error: any, source: any) => {
     const template = handlebars.compile(source);
     const html = template(data);
 
     fs.writeFileSync(
-        path.join(dirName, 'html', fileName.replace(/\.json$/, '.html')),
+        path.join(htmlDirName, fileName.replace(/\.json$/, '.html')),
         html,
     );
 });

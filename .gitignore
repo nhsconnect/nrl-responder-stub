@@ -1,4 +1,7 @@
 node_modules/
 dist/
 reports/
-src/docs.html
+lib/docs.html
+
+**/*.tsbuildinfo
+**/.tsbuildinfo

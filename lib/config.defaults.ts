@@ -1,5 +1,4 @@
 const defaultConfig: IConfig = {
-    mode: 'exploratory',
     endpointFormat: 'local',
     useFhirMimeTypes: true,
     explicitlySetUtf8: true,
