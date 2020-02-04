@@ -26,21 +26,25 @@ The required dependencies for running the testing app will be automatically inst
 
 1.  Download and extract the latest release from [the Releases page](https://github.com/nhsconnect/consumer-record-retrieval-test-app/releases).
 
-    <div class="notice" markdown="1">
+    <div class="notice">
 
     **Note**: Make sure to select `nrl-consumer-record-retrieval-vX.X.X.zip`, which is the production build, rather than "Source code".
 
     </div>
 
-2.  In a terminal, navigate to the location of the extracted files:
+    ![Downloading the latest release](assets/latest-release.png)
+
+2.  Configure SSL certificates and other options in `config.user.js` (see [Configuration Options](#configuration-options)).
+
+3.  In a terminal, navigate to the location of the extracted files:
 
     ```
     cd <path to test app>
     ```
 
-## Running tests
+## Sending Requests
 
-While the test app is running, tests can be run against each of the records specified in the configuration.
+While the test app is running, requests can be sent to retrieve any of the records specified in the configuration, and the test app will run validations against those requests.
 
 1.  Start the test app
 
@@ -54,7 +58,9 @@ While the test app is running, tests can be run against each of the records spec
     ./start.sh
     ```
 
-2.  Send a `GET` request to the relevant endpoint from the system-under-test.
+    ![Running the app in the terminal](assets/app-start.png)
+
+2.  Send `GET` requests to the relevant endpoints from the system-under-test.
     
     If `endpointFormat` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property of `config.user.js`.
 
@@ -67,14 +73,13 @@ While the test app is running, tests can be run against each of the records spec
 
     <pre><code><span id="urlOrigin">&lt;rootUrl&gt;</span>/https%3A%2F%2Fprovider1.example.com%2Fapi%2Fpatients%2F1%2Frecords%2Fsample.json</code></pre>
 
-Logs are output or persisted as specified in the `reportOutputs` property of `config.user.js`.
+Reports are output or persisted as specified in the `reportOutputs` property of `config.user.js`.
 
-When collecting and providing evidence, make sure `reportOutputs.reportsDir` is set to `true` (default), run the tests as specified, and send the JSON output as evidence.
+When collecting and providing evidence, make sure `reportOutputs.reportsDir` is set to `true` (default), run the tests as specified, and send the JSON report as evidence.
 
 JSON reports can be converted into human-readable HTML format by running `node pretty-html -f <file name>`, or `node pretty-html` with no arguments to convert the most recently-created report.
 
-
-## Configuration options
+## Configuration Options
 
 Various configuration options are available in `config.user.js`:
 

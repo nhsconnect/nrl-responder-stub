@@ -20,5 +20,4 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`ts-node ".\lib\get-ca-file"`) DO (
     IF NOT "%%F" == "null" SET NODE_EXTRA_CA_CERTS=%%F
 )
 
-CALL ts-node ".\make-doc"
 CALL ts-node ".\lib\main"

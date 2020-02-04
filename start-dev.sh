@@ -10,5 +10,4 @@ then
     export NODE_EXTRA_CA_CERTS=$CAVAR
 fi
 
-ts-node "./make-doc"
 ts-node "./lib/main"

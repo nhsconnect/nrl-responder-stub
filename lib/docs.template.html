@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Documentation | Consumer Record Retrieval Testing App</title>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
     <style>
         .markdown-body {
@@ -35,12 +34,19 @@
         .notice p:last-child {
             margin-bottom: 0;
         }
+
+        .anchorjs-link {
+            text-decoration: none !important;
+        }
     </style>
 </head>
 <body>
     <main class="markdown-body">{{md}}</main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js"></script>
     <script>
+        anchors.add();
+
         if (document.querySelector('#urlOrigin')
             && window.location.origin
             && /^https?:\/\//.test(window.location.origin)) {

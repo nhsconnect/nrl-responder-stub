@@ -61,6 +61,9 @@ const start = () => {
         return next();
     });
 
+    // for docs
+    app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
     // prevent unnecessary console errors if viewed in browser
     app.get('/favicon.ico', (_request, response) => response.sendStatus(httpStatus.NoContent));
 
