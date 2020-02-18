@@ -14,6 +14,7 @@
 import handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
+import checkSecureMode from './lib/check-secure-mode';
 
 const baseDirName = path.join(__dirname, 'reports');
 
@@ -89,6 +90,8 @@ const sortValidations = (validationA: ISerializableValidation, validationB: ISer
 
     return 0;
 };
+
+data.meta.secureMode = checkSecureMode(data.meta.config);
 
 data.metaJson = JSON.stringify(data.meta, null, 4);
 

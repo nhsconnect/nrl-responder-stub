@@ -1,10 +1,10 @@
 {
     "name": "consumer-record-retrieval-test-app",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "NHS Digital NRL Consumer Record Retrieval Test App",
     "main": "main.js",
     "scripts": {
-        "copy-files": "cp -r responses dist && cp -r \"lib/static\" \"lib/assets\" \"lib/docs.md\" \"lib/docs.html\" \"dist/lib\" && cp dist-static/* package.json package-lock.json dist",
+        "copy-files": "cp -r responses dist && cp -r \"lib/static\" \"lib/assets\" \"lib/docs.md\" \"lib/docs.html\" \"dist/lib\" && cp dist-static/* file-endpoint-mapping.tsv package.json package-lock.json dist",
         "build": "rm -rf dist && mkdir dist && mkdir \"dist/lib\" && ts-node \"lib/make-doc\" && npm run copy-files && tsc --p tsconfig.prod.json",
         "build-dev": "ts-node \"lib/make-doc\"",
         "dev": "npm run build-dev && start-dev",

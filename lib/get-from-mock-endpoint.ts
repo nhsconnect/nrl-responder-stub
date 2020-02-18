@@ -18,12 +18,20 @@ import config from './config';
 
 import { buildLogEntry, writeLog } from './logs';
 import { TLSSocket } from 'tls';
+import parseTsv from './parse-tsv';
+import checkSecureMode from './check-secure-mode';
 
 const {
-    pathFileMapping,
     endpointFormat,
-    secureMode,
 } = config;
+
+const secureMode = checkSecureMode(config);
+
+const fileEndpointMapping = parseTsv(
+    fs.readFileSync(
+        path.join(__dirname, '../file-endpoint-mapping.tsv'), 'utf8'
+    )
+);
 
 const VALIDATION_IDS = {
     responseCode: `${globalId()}`,
@@ -139,13 +147,13 @@ const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INext
 
     const urlOrPath = url || $path;
 
-    const fileName = pathFileMapping[urlOrPath];
+    const fileName = fileEndpointMapping.find(row => row.endpoint === urlOrPath)?.file;
 
     if (!fileName) {
         return fail(
             response,
             httpStatus.NotFound,
-            `A filename corresponding to path ${urlOrPath} must exist in pathFileMapping in configuration`
+            `A filename corresponding to path ${urlOrPath} must exist in file-endpoint-mapping.tsv`
         );
 
     }

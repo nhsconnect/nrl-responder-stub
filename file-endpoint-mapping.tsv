@@ -1,0 +1,5 @@
+FILE	ENDPOINT
+immunization-example.json	https://provider1.example.com/api/patients/1/records/sample.json
+immunization-example.xml	https://provider1.example.com/api/patients/1/records/sample.xml
+sample.html	https://provider1.example.com/api/patients/1/records/sample.html
+sample.pdf	https://provider1.example.com/api/patients/1/records/sample.pdf

@@ -11,17 +11,10 @@ const userConfig: IConfigOverrides = {
 
     // logBodyMaxLength: 1000,
 
-    // pathFileMapping: {
-    //     'api/patients/1/records/sample.json': 'immunization-example.json',
-    //     'api/patients/1/records/sample.xml': 'immunization-example.xml',
-    //     'api/patients/1/records/sample.html': 'sample.html',
-    //     'api/patients/1/records/sample.pdf': 'sample.pdf',
-    // },
-
     // sslCACert: 'C:/certs/server_cert.pem',
     // sslServerCert: 'C:/certs/server_cert.pem',
     // sslServerKey: 'C:/certs/server_key.pem',
-    // secureMode: false,
+    // sslInsecure: false,
 };
 
 export default userConfig;

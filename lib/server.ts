@@ -16,15 +16,17 @@ import getFromMockEndpoint from './get-from-mock-endpoint';
 import { logs, reportsDir, reportPath } from './logs';
 
 import https from 'https';
+import checkSecureMode from './check-secure-mode';
 
 const {
     port,
     logBodyMaxLength,
     reportOutputs,
-    secureMode,
     sslServerCert,
     sslServerKey,
 } = config;
+
+const secureMode = checkSecureMode(config);
 
 const app = express();
 

@@ -54,15 +54,11 @@ declare global {
 
         logBodyMaxLength: number;
 
-        pathFileMapping: {
-            [path: string]: filename;
-        };
-
         sslCACert: string | null;
         sslServerCert: string | null;
         sslServerKey: string | null;
 
-        secureMode?: boolean;
+        sslInsecure?: boolean;
     }
 
     interface IStringMap<T> {
