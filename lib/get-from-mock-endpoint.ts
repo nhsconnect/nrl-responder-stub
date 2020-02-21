@@ -11,8 +11,6 @@ import runValidations from './run-validations';
 import Validations from './validations';
 import setMimeType from './set-mime-type';
 
-import { globalId } from './ids';
-
 import httpStatus from './http-status';
 import config from './config';
 
@@ -34,7 +32,7 @@ const fileEndpointMapping = parseTsv(
 );
 
 const VALIDATION_IDS = {
-    responseCode: `${globalId()}`,
+    responseCode: 'response-code',
 };
 
 const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction) => {

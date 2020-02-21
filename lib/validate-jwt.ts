@@ -1,20 +1,19 @@
 import jwt from 'jsonwebtoken';
 import { isRequestingSystem, isRequestingOrganization } from './pattern-matchers';
-import { globalId } from './ids';
 
 const TOLERANCE_SECONDS = 30;
 
 const VALIDATION_IDS = {
-    parseJwt: `${globalId()}`,
-    missingClaims: `${globalId()}`,
-    issuedInFuture: `${globalId()}`,
-    expiryOver5Mins: `${globalId()}`,
-    issuedAfterExpiry: `${globalId()}`,
-    subNotRequestingUser: `${globalId()}`,
-    reasonForRequest: `${globalId()}`,
-    scope: `${globalId()}`,
-    requestingSystemFormat: `${globalId()}`,
-    requestingOrganizationFormat: `${globalId()}`
+    parseJwt: 'parse-jwt',
+    missingClaims: 'missing-claims',
+    issuedInFuture: 'issued-in-future',
+    expiryOver5Mins: 'expiry-over-5-mins',
+    issuedAfterExpiry: 'issued-after-expiry',
+    subNotRequestingUser: 'sub-not-requesting-user',
+    reasonForRequest: 'reason-for-request',
+    scope: 'scope',
+    requestingSystemFormat: 'requesting-system-format',
+    requestingOrganizationFormat: 'requesting-organization-format'
 };
 
 export default (validations: IValidations, token: string) => {

@@ -7,14 +7,13 @@
 
 import validateJwt from './validate-jwt';
 import { isUuid, isAsid } from './pattern-matchers';
-import { globalId } from './ids';
 
 const VALIDATION_IDS = {
-    missingHeaders: `${globalId()}`,
-    interactionID: `${globalId()}`,
-    traceId: `${globalId()}`,
-    asidHeaders: `${globalId()}`,
-    authHeader: `${globalId()}`,
+    missingHeaders: 'missing-headers',
+    interactionID: 'interaction-id',
+    traceId: 'trace-id',
+    asidHeaders: 'asid-headers',
+    authHeader: 'auth-header',
 };
 
 export default (validations: IValidations) => {
