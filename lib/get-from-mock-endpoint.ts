@@ -4,6 +4,8 @@
  * 
  */
 
+import { Request, Response, NextFunction } from 'express';
+
 import fs from 'fs';
 import path from 'path';
 
@@ -35,14 +37,14 @@ const VALIDATION_IDS = {
     responseCode: 'response-code',
 };
 
-const getFromMockEndpoint = (request: IRequest, response: IResponse, next: INextFunction) => {
+const getFromMockEndpoint = (request: Request, response: Response, next: NextFunction) => {
     const validations = new Validations(request, response);
 
     validations
         .add(VALIDATION_IDS.responseCode, 'Request returns 2XX response code')
         .setFailureState(false); // initialize to success
 
-    const fail = (response: IResponse, code: number, message: any) => {
+    const fail = (response: Response, code: number, message: any) => {
         validations
             .find(VALIDATION_IDS.responseCode)
             .setFailureState(`Request failed with status ${code}: ${JSON.stringify(message)}`);

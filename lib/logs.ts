@@ -1,7 +1,10 @@
+import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 
 import config from './config';
+
+import { responseBodies } from './request-response-extensions';
 
 const reportFileName = `${new Date().toISOString().slice(0, -5).replace(/\D/g, '-')}.json`;
 const reportsDir = path.join(__dirname, '..', 'reports');
@@ -25,9 +28,11 @@ const writeLog = (entry: ILogEntry) => {
     }
 };
 
-const buildLogEntry = (request: IRequest, response: IResponse, validations?: IValidations) => {
+const buildLogEntry = (request: Request, response: Response, validations?: IValidations) => {
     const { headers, httpVersion, method, path, body: requestBody } = request;
-    const { statusCode, body: responseBody } = response;
+    const { statusCode } = response;
+
+    const responseBody = responseBodies.get(response);
 
     const entry: ILogEntry = {
         request: { headers, httpVersion, method, path, body: requestBody },

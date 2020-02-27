@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import config from './config';
 
 const { useFhirMimeTypes, explicitlySetUtf8 } = config;
@@ -15,7 +16,7 @@ const FILE_FORMATS: IStringMap<IFileFormat> = {
     }
 };
 
-export default (request: IRequest, response: IResponse) => {
+export default (request: Request, response: Response) => {
     const extension = request.url.match(/\.(\w+)$/)?.[1]; // percent-encoding doesn't affect "."
 
     const fileFormat = extension && FILE_FORMATS[extension];

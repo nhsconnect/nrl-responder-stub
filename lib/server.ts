@@ -18,6 +18,8 @@ import { logs, reportsDir, reportPath } from './logs';
 import https from 'https';
 import checkSecureMode from './check-secure-mode';
 
+import { responseBodies } from './request-response-extensions';
+
 const {
     port,
     logBodyMaxLength,
@@ -35,7 +37,7 @@ const truncate = (str: string, maxLen: number) => {
 };
 
 const start = () => {
-    app.use(function (_request, response: IResponse, next) {
+    app.use(function (_request, response, next) {
         // populate `response.body` on `sendFile`, for logging purposes
         // this allows output reports to include snippets of the response body
 
@@ -47,13 +49,13 @@ const start = () => {
 
             switch (logBodyMaxLength) {
                 case -1:
-                    response.body = body;
+                    responseBodies.set(response, body);
                     break;
                 case 0:
                     // no-op - body not added to log
                     break;
                 default:
-                    response.body = truncate(body, logBodyMaxLength);
+                    responseBodies.set(response, truncate(body, logBodyMaxLength));
                     break;
             }
 

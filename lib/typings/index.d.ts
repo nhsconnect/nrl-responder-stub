@@ -65,13 +65,9 @@ declare global {
         [key: string]: T;
     }
 
-    type IRequest = Request;
-    type IResponse = Response & { body?: string };
-    type INextFunction = NextFunction;
-
     interface IValidations {
-        request: IRequest;
-        response: IResponse;
+        request: Request;
+        response: Response;
 
         add: (validationId: string, description: string) => IValidation;
         find: (validationId: string) => IValidation;
@@ -85,8 +81,8 @@ declare global {
         validationId: string;
         description: string;
 
-        request: IRequest;
-        response: IResponse;
+        request: Request;
+        response: Response;
 
         hasRun: boolean;
         success?: boolean;

@@ -1,9 +1,11 @@
+import { Request, Response } from 'express';
+
 class Validation implements IValidation {
     constructor(
         public validationId: string,
         public description: string,
-        public request: IRequest,
-        public response: IResponse
+        public request: Request,
+        public response: Response
     ) { }
 
     public hasRun: boolean = false;
@@ -27,8 +29,8 @@ class Validation implements IValidation {
 
 export default class Validations implements IValidations {
     constructor(
-        public request: IRequest,
-        public response: IResponse,
+        public request: Request,
+        public response: Response,
     ) { }
 
     private _validationList: IValidation[] = [];
