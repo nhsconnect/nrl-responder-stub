@@ -21,9 +21,7 @@ import { TLSSocket } from 'tls';
 import parseTsv from './parse-tsv';
 import checkSecureMode from './check-secure-mode';
 
-const {
-    endpointFormat,
-} = config;
+const { environment } = config;
 
 const secureMode = checkSecureMode(config);
 
@@ -89,11 +87,13 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
     // `path` var is already in use by node's `path` module
     const $path = request.url.slice(1);
 
-    if (endpointFormat === 'local' && $path.includes('/')) {
+    if (environment === 'local' && $path.includes('/')) {
         response
             .status(httpStatus.BadRequest)
-            .send('Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)');
-        
+            .send(
+                'Provider URL must be percent-encoded (cannot contain unescaped forward-slashes)',
+            );
+
         return next();
     }
 
@@ -123,14 +123,14 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
 
     let url;
 
-    if (endpointFormat === 'local') {
+    if (environment === 'local') {
         try {
             url = decodeURIComponent($path);
         } catch {
             return fail(
                 response,
                 httpStatus.BadRequest,
-                `${$path} cannot be percent-decoded`
+                `${$path} cannot be percent-decoded`,
             );
         }
 
@@ -140,7 +140,7 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
             return fail(
                 response,
                 httpStatus.BadRequest,
-                `${url} is not a valid URL`
+                `${url} is not a valid URL`,
             );
         }
     }

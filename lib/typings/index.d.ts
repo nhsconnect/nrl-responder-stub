@@ -40,7 +40,7 @@ declare global {
     }
 
     interface IConfig {
-        endpointFormat: 'local' | 'integration';
+        environment: 'local' | 'integration';
 
         useFhirMimeTypes?: boolean;
         explicitlySetUtf8?: boolean;

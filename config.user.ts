@@ -1,5 +1,5 @@
 const userConfig: IConfigOverrides = {
-    // endpointFormat: 'integration',
+    // environment: 'integration',
     // useFhirMimeTypes: true,
     // explicitlySetUtf8: true,
     // port: 5000,

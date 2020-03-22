@@ -62,7 +62,7 @@ While the test app is running, requests can be sent to retrieve any of the recor
 
 2.  Send `GET` requests to the relevant endpoints from the system-under-test.
     
-    If `endpointFormat` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property of `config.user.js`.
+    If `environment` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property of `config.user.js`.
 
     For example:
 
@@ -85,14 +85,14 @@ Various configuration options are available in `config.user.js`:
 
 Property                   | Type                         | Details
 -------------------------- | ---------------------------- | ----------------------------
-`endpointFormat`           |  `"local" \| "integration"`  | If `endpointFormat` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property.
+`environment`           |  `"local" \| "integration"`  | If `environment` is `"local"`, endpoints are constructed as if the root is the SSP URL, i.e. the Provider URL must be percent-encoded and appended to the root. Provider URLs are as configured in the `pathFileMapping` property.
 `useFhirMimeTypes`         | `boolean`                    | If `true` (default), MIME types of JSON and XML responses will be set to `application/fhir+json` and `application/fhir+xml` respectively.
 `explicitlySetUtf8`        | `boolean`                    | If `true`, append `;charset=utf-8` to MIME types.
 `port`                     | `number`                     | The port over which to serve the test app.
 `reportOutputs.stdout`     | `boolean`                    | Show report output in real-time in the terminal.
 `reportOutputs.reportsDir` | `boolean`                    | Save reports as JSON files in `/reports` directory.
 `logBodyMaxLength`         | `number`                     | Maximum chars of response body to log, after which the body will be truncated.<br>• `-1` logs the entire response body.<br>• `0` logs no response body.
-`pathFileMapping`          | `{ [path: string]: string }` | To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property.<br><br>If `endpointFormat` is `local`, the key of each mapping must be a valid URL, but it doesn't have to point to anything.
+`pathFileMapping`          | `{ [path: string]: string }` | To add records to test against, place the files in the `/responses` directory, and add a mapping for each to this property.<br><br>If `environment` is `local`, the key of each mapping must be a valid URL, but it doesn't have to point to anything.
 `sslCACert`                | `string \| null`             | The <abbr title="certificate authority">CA</abbr> certificate, required for secure mode.
 `sslServerCert`            | `string \| null`             | The server certificate, required for secure mode.
 `sslServerKey`             | `string \| null`             | The server key, required for secure mode.
