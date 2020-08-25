@@ -1,4 +1,4 @@
-const checkSecureMode = (config: IConfig) => Boolean(
+const checkSecureMode = (config: Config) => Boolean(
     !config.sslInsecure
         && config.sslCACert
         && config.sslServerKey

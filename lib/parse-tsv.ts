@@ -6,7 +6,7 @@ const parseTsv = (tsv: string) => {
     return lines.slice(1).map(line => {
         const cells = line.split('\t').map(cell => cell.trim());
 
-        const out: IStringMap<string> = {};
+        const out: Record<string, string> = {};
 
         cells.forEach((cell, idx) => out[headers[idx]?.toLowerCase() || idx] = cell);
 

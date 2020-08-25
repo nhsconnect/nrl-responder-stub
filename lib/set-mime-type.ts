@@ -3,7 +3,7 @@ import config from './config';
 
 const { useFhirMimeTypes, explicitlySetUtf8 } = config;
 
-const FILE_FORMATS: IStringMap<IFileFormat> = {
+const FILE_FORMATS: Record<string, FileFormat> = {
     json: {
         extension: 'json',
         baseMimeType: 'application/json',

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Consumer Record Retrieval Testing App is intended for Consumers to carry out conformance testing of their record retrieval capabilities, during local and INT stages of testing.
+The NRL Responder Stub is intended for Consumers to carry out conformance testing of their record retrieval capabilities, during local and INT stages of testing.
 
 It consists of two main components:
 

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import config from './config';
+import Validations from './validations';
 
 import { responseBodies } from './request-response-extensions';
 
@@ -16,11 +17,11 @@ const { reportOutputs } = config;
 
 const meta = { config };
 
-const writeLog = (entry: ILogEntry) => {
+const writeLog = (entry: LogEntry) => {
     logs.push(entry);
 
     if (reportOutputs.stdout) {
-        console.log(JSON.parse(JSON.stringify(entry)));
+        console.info(JSON.parse(JSON.stringify(entry)));
     }
 
     if (reportOutputs.reportsDir) {
@@ -28,13 +29,13 @@ const writeLog = (entry: ILogEntry) => {
     }
 };
 
-const buildLogEntry = (request: Request, response: Response, validations?: IValidations) => {
+const buildLogEntry = (request: Request, response: Response, validations?: Validations) => {
     const { headers, httpVersion, method, path, body: requestBody } = request;
     const { statusCode } = response;
 
     const responseBody = responseBodies.get(response);
 
-    const entry: ILogEntry = {
+    const entry: LogEntry = {
         request: { headers, httpVersion, method, path, body: requestBody },
         response: { statusCode, headers: response.getHeaders(), body: responseBody },
         validations: validations?.listSerializable()

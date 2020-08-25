@@ -1,7 +1,5 @@
 /**
  * Handles all GET requests to any non-root path
- * 
- * 
  */
 
 import { Request, Response, NextFunction } from 'express';
@@ -18,24 +16,22 @@ import config from './config';
 
 import { buildLogEntry, writeLog } from './logs';
 import { TLSSocket } from 'tls';
-import parseTsv from './parse-tsv';
+import { fileEndpointMapping } from './file-endpoint-mapping';
 import checkSecureMode from './check-secure-mode';
 
 const { environment } = config;
 
 const secureMode = checkSecureMode(config);
 
-const fileEndpointMapping = parseTsv(
-    fs.readFileSync(
-        path.join(__dirname, '../file-endpoint-mapping.tsv'), 'utf8'
-    )
-);
-
 const VALIDATION_IDS = {
     responseCode: 'response-code',
 };
 
-const getFromMockEndpoint = (request: Request, response: Response, next: NextFunction) => {
+const getFromMockEndpoint = (
+    request: Request,
+    response: Response,
+    next: NextFunction,
+) => {
     const validations = new Validations(request, response);
 
     validations
@@ -45,41 +41,35 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
     const fail = (response: Response, code: number, message: any) => {
         validations
             .find(VALIDATION_IDS.responseCode)
-            .setFailureState(`Request failed with status ${code}: ${JSON.stringify(message)}`);
+            .setFailureState(
+                `Request failed with status ${code}: ${JSON.stringify(
+                    message,
+                )}`,
+            );
 
-        response
-            .status(code)
-            .send(message);
+        response.status(code).send(message);
 
         return next();
-    }
+    };
 
     if (secureMode) {
-        const certificate = (request.connection as TLSSocket).getPeerCertificate()
+        const certificate = (request.connection as TLSSocket).getPeerCertificate();
         const isAuthorised: boolean = (request as any).client.authorized;
 
         if (!isAuthorised) {
             if (certificate.subject) {
-                return fail(
-                    response,
-                    httpStatus.Forbidden,
-                    {
-                        certificate: {
-                            subject: certificate.subject.CN || null,
-                            issuer: certificate.issuer.CN || null,
-                        },
-                        message: 'Unauthorized client certificate',
-                    }
-                );
+                return fail(response, httpStatus.Forbidden, {
+                    certificate: {
+                        subject: certificate.subject.CN || null,
+                        issuer: certificate.issuer.CN || null,
+                    },
+                    message: 'Unauthorized client certificate',
+                });
             } else {
-                return fail(
-                    response,
-                    httpStatus.Unauthorized,
-                    {
-                        certificate: null,
-                        message: 'No client certificate',
-                    }
-                );
+                return fail(response, httpStatus.Unauthorized, {
+                    certificate: null,
+                    message: 'No client certificate',
+                });
             }
         }
     }
@@ -111,21 +101,19 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
 
     if (validations.list().some(validation => validation.success === false)) {
         const data = {
-            failures: validations.listSerializable().filter(validation => validation.success === false)
+            failures: validations
+                .listSerializable()
+                .filter(validation => validation.success === false),
         };
 
-        return fail(
-            response,
-            httpStatus.BadRequest,
-            data
-        );
+        return fail(response, httpStatus.BadRequest, data);
     }
 
-    let url;
+    let endpoint: string;
 
     if (environment === 'local') {
         try {
-            url = decodeURIComponent($path);
+            endpoint = decodeURIComponent($path);
         } catch {
             return fail(
                 response,
@@ -135,27 +123,27 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
         }
 
         try {
-            new URL(url);
+            new URL(endpoint);
         } catch {
             return fail(
                 response,
                 httpStatus.BadRequest,
-                `${url} is not a valid URL`,
+                `${endpoint} is not a valid URL`,
             );
         }
+    } else {
+        endpoint = '/' + $path;
     }
 
-    const urlOrPath = url || $path;
-
-    const fileName = fileEndpointMapping.find(row => row.endpoint === urlOrPath)?.file;
+    const fileName = fileEndpointMapping.find(row => row.endpoint === endpoint)
+        ?.file;
 
     if (!fileName) {
         return fail(
             response,
             httpStatus.NotFound,
-            `A filename corresponding to path ${urlOrPath} must exist in file-endpoint-mapping.tsv`
+            `A filename corresponding to endpoint ${endpoint} must exist in file-endpoint-mapping.tsv`,
         );
-
     }
 
     const filePath = path.join(__dirname, '..', 'responses', fileName);
@@ -164,7 +152,7 @@ const getFromMockEndpoint = (request: Request, response: Response, next: NextFun
         return fail(
             response,
             httpStatus.NotFound,
-            `fileName ${fileName} must exist as a file in the responses folder`
+            `fileName ${fileName} must exist as a file in the responses folder`,
         );
     }
 

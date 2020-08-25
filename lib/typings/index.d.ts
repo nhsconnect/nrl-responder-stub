@@ -1,21 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http';
 
 declare global {
     type filename = string;
 
-    type IConfigOverrides = Partial<IConfig>;
-
-    interface ITestCase {
-        name: string;
-        endpoint: string;
-        expect: {
-            responseCode: number;
-            validations: boolean | string[];
-        };
-    }
-
-    interface ILogEntry {
+    interface LogEntry {
         meta?: {
             title: string;
             description?: string;
@@ -36,10 +25,10 @@ declare global {
             headers: OutgoingHttpHeaders;
             body: string | undefined;
         };
-        validations: ISerializableValidation[] | undefined;
+        validations: SerializableValidation[] | undefined;
     }
 
-    interface IConfig {
+    interface Config {
         environment: 'local' | 'integration';
 
         useFhirMimeTypes?: boolean;
@@ -61,20 +50,6 @@ declare global {
         sslInsecure?: boolean;
     }
 
-    interface IStringMap<T> {
-        [key: string]: T;
-    }
-
-    interface IValidations {
-        request: Request;
-        response: Response;
-
-        add: (validationId: string, description: string) => IValidation;
-        find: (validationId: string) => IValidation;
-        list: () => IValidation[];
-        listSerializable: () => ISerializableValidation[];
-    }
-
     type falsy = false | null | undefined | 0;
 
     interface IValidation {
@@ -92,7 +67,7 @@ declare global {
         setFailureState: (newFailureState: string | falsy) => void;
     }
 
-    interface ISerializableValidation {
+    interface SerializableValidation {
         validationId: string;
         description: string;
         hasRun: boolean;
@@ -100,36 +75,35 @@ declare global {
         details?: string;
     }
 
-    interface IFileFormat {
+    interface FileFormat {
         extension: string;
         baseMimeType: string;
         fhirMimeType: string;
     }
 
-    interface IProviderData {
-        providers: IStringMap<IProvider>
+    interface ProviderData {
+        providers: Record<string, Provider>
     }
 
-    interface IProvider {
+    interface Provider {
         url: string;
-        patients: IStringMap<IPatient>
-
+        patients: Record<string, Patient>
     }
 
-    interface IPatient {
+    interface Patient {
         id: string;
-        records: IStringMap<IRecord>
+        records: Record<string, RlsRecord>
     }
 
-    interface IRecord {
+    interface RlsRecord {
         id: string;
         desc: string;
         availableFormats: string[];
     }
 
-    interface IFileInfo {
-        patient: IPatient;
-        record: IRecord;
-        fileFormat: IFileFormat;
+    interface FileInfo {
+        patient: Patient;
+        record: RlsRecord;
+        fileFormat: FileFormat;
     }
 }

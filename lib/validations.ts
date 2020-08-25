@@ -5,8 +5,8 @@ class Validation implements IValidation {
         public validationId: string,
         public description: string,
         public request: Request,
-        public response: Response
-    ) { }
+        public response: Response,
+    ) {}
 
     public hasRun: boolean = false;
     public success?: boolean;
@@ -27,11 +27,18 @@ class Validation implements IValidation {
     }
 }
 
+interface IValidations {
+    request: Request;
+    response: Response;
+
+    add: (validationId: string, description: string) => IValidation;
+    find: (validationId: string) => IValidation;
+    list: () => IValidation[];
+    listSerializable: () => SerializableValidation[];
+}
+
 export default class Validations implements IValidations {
-    constructor(
-        public request: Request,
-        public response: Response,
-    ) { }
+    constructor(public request: Request, public response: Response) {}
 
     private _validationList: IValidation[] = [];
 
@@ -40,7 +47,12 @@ export default class Validations implements IValidations {
             throw new Error(`Duplicate validationId: ${validationId}`);
         }
 
-        const validation = new Validation(validationId, description, this.request, this.response);
+        const validation = new Validation(
+            validationId,
+            description,
+            this.request,
+            this.response,
+        );
 
         this._validationList.push(validation);
 
@@ -48,7 +60,9 @@ export default class Validations implements IValidations {
     }
 
     private _find(validationId: string) {
-        return this._validationList.find(validation => validationId === validation.validationId);
+        return this._validationList.find(
+            validation => validationId === validation.validationId,
+        );
     }
 
     public find(validationId: string) {
@@ -68,12 +82,14 @@ export default class Validations implements IValidations {
     public listSerializable() {
         // Exclude circular structures to prevent `TypeError: Converting circular structure to JSON`
 
-        return this._validationList.map(({ validationId, description, hasRun, success, details }) => ({
-            validationId,
-            description,
-            hasRun,
-            success,
-            details,
-        }));
+        return this._validationList.map(
+            ({ validationId, description, hasRun, success, details }) => ({
+                validationId,
+                description,
+                hasRun,
+                success,
+                details,
+            }),
+        );
     }
 }

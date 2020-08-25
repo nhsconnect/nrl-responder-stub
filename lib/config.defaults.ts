@@ -1,4 +1,4 @@
-const defaultConfig: IConfig = {
+const defaultConfig: Config = {
     environment: 'local',
     useFhirMimeTypes: true,
     explicitlySetUtf8: true,

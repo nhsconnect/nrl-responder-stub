@@ -1,0 +1,5 @@
+node_modules
+npm-debug.log
+
+responses/from-api/
+dist/responses/from-api/

@@ -1,7 +1,7 @@
 {
     "name": "consumer-record-retrieval-test-app",
     "version": "0.2.2",
-    "description": "NHS Digital NRL Consumer Record Retrieval Test App",
+    "description": "NHS Digital NRL Responder Stub",
     "main": "main.js",
     "scripts": {
         "preinstall": "npm i -g ts-node newman copyfiles rimraf",
@@ -10,7 +10,7 @@
         "build": "rimraf dist && mkdir dist && mkdir \"dist/lib\" && npm run make-doc && npm run copy-files && tsc --p tsconfig.prod.json",
         "build-dev": "npm run make-doc",
         "dev": "npm run build-dev && start-dev",
-        "newman": "newman run CRRTA.postman_collection.json -k -e CRRTA_Local.postman_environment.json --ssl-client-cert \"C:\\certs\\alice_cert.pem\" --ssl-client-key \"C:\\certs\\alice_key.pem\""
+        "newman": "newman run responder-stub.postman_collection.json -k -e responder-stub-local.postman_environment.json # --ssl-client-cert \"C:\\certs\\alice_cert.pem\" --ssl-client-key \"C:\\certs\\alice_key.pem\""
     },
     "directories": {
         "lib": "lib",
@@ -23,6 +23,7 @@
         "@types/jsonwebtoken": "^8.3.5",
         "@types/marked": "^0.7.2",
         "@types/node": "^12.12.24",
+        "@types/uuid": "^8.3.0",
         "marked": "^0.7.0",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.3"
@@ -30,7 +31,8 @@
     "dependencies": {
         "chalk": "^2.4.2",
         "express": "^4.17.1",
-        "handlebars": "^4.5.3",
-        "jsonwebtoken": "^8.5.1"
+        "handlebars": "^4.7.6",
+        "jsonwebtoken": "^8.5.1",
+        "uuid": "^8.3.0"
     }
 }

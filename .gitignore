@@ -5,3 +5,6 @@ lib/docs.html
 
 **/*.tsbuildinfo
 **/.tsbuildinfo
+
+responses/from-api/
+dist/responses/from-api/

@@ -1,4 +1,4 @@
-const userConfig: IConfigOverrides = {
+const userConfig: Partial<Config> = {
     // environment: 'integration',
     // useFhirMimeTypes: true,
     // explicitlySetUtf8: true,

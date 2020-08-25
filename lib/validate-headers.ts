@@ -7,6 +7,7 @@
 
 import validateJwt from './validate-jwt';
 import { isUuid, isAsid } from './pattern-matchers';
+import Validations from './validations';
 
 const VALIDATION_IDS = {
     missingHeaders: 'missing-headers',
@@ -16,7 +17,7 @@ const VALIDATION_IDS = {
     authHeader: 'auth-header',
 };
 
-export default (validations: IValidations) => {
+export default (validations: Validations) => {
     // Ssp-TraceID  	    Consumer’s TraceID (i.e. GUID/UUID)
     // Ssp-From	            Consumer’s ASID
     // Ssp-To       	    Provider’s ASID
